@@ -30,3 +30,7 @@
   }
 }
 '''
+
+---
+npx tsx src/tests/googleApiSmokeTest.ts
+npx tsx src/tests/mcpToolsTest.ts
