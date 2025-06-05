@@ -38,10 +38,15 @@ interface GeocodeResult {
 
 export class GoogleMapsTools {
   private client: Client;
-  private readonly defaultLanguage: Language = Language.zh_TW;
+  // Force English language for all API responses
+  private readonly defaultLanguage: Language = Language.en_US;
 
   constructor() {
-    this.client = new Client({});
+    this.client = new Client({
+      config: {
+        language: Language.en_US // Explicitly set language in client config
+      }
+    });
     if (!process.env.GOOGLE_MAPS_API_KEY) {
       throw new Error("Google Maps API Key is required");
     }
