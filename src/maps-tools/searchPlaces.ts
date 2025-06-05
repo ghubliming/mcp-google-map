@@ -73,7 +73,12 @@ export class PlacesSearcher {
 
   async searchNearby(params: { center: { value: string; isCoordinates: boolean }; keyword?: string; radius?: number; openNow?: boolean; minRating?: number }): Promise<SearchNearbyResponse> {
     try {
-      const location = await this.mapsTools.getLocation(params.center);
+      // Ensure center parameter has isCoordinates flag
+      const center = typeof params.center === 'string' 
+        ? { value: params.center, isCoordinates: false }
+        : params.center;
+
+      const location = await this.mapsTools.getLocation(center);
       console.error(location);
       const places = await this.mapsTools.searchNearbyPlaces({
         location,
