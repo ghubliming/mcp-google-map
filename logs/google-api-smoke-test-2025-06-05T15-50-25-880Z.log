@@ -1,0 +1,19 @@
+
+Testing Geocoding API...
+✅ Geocoding API works!
+Formatted address: 1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA
+
+Testing Places API (Nearby Search)...
+✅ Places API (Nearby Search) works!
+Found 20 places
+
+Testing Distance Matrix API...
+✅ Distance Matrix API works!
+Distance: 345 km
+
+Testing Directions API...
+✅ Directions API works!
+Route found with 1 legs
+
+Testing Elevation API...
+✅ Elevation API works!
