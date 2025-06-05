@@ -53,7 +53,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       if (!result.success) {
         return {
-          content: [{ type: "text", text: result.error || "搜尋失敗" }],
+          content: [{ type: "text", text: result.error || "Search failed" }],
           isError: true,
         };
       }
@@ -78,7 +78,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       if (!result.success) {
         return {
-          content: [{ type: "text", text: result.error || "獲取詳細資訊失敗" }],
+          content: [{ type: "text", text: result.error || "Failed to get place details" }],
           isError: true,
         };
       }
@@ -103,7 +103,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       if (!result.success) {
         return {
-          content: [{ type: "text", text: result.error || "地址轉換座標失敗" }],
+          content: [{ type: "text", text: result.error || "Failed to convert address to coordinates" }],
           isError: true,
         };
       }
@@ -129,7 +129,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       if (!result.success) {
         return {
-          content: [{ type: "text", text: result.error || "座標轉換地址失敗" }],
+          content: [{ type: "text", text: result.error || "Failed to convert coordinates to address" }],
           isError: true,
         };
       }
@@ -156,7 +156,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       if (!result.success) {
         return {
-          content: [{ type: "text", text: result.error || "計算距離矩陣失敗" }],
+          content: [{ type: "text", text: result.error || "Failed to calculate distance matrix" }],
           isError: true,
         };
       }
@@ -185,7 +185,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       if (!result.success) {
         return {
-          content: [{ type: "text", text: result.error || "獲取路線指引失敗" }],
+          content: [{ type: "text", text: result.error || "Failed to get route directions" }],
           isError: true,
         };
       }
@@ -210,7 +210,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       if (!result.success) {
         return {
-          content: [{ type: "text", text: result.error || "獲取海拔數據失敗" }],
+          content: [{ type: "text", text: result.error || "Failed to get elevation data" }],
           isError: true,
         };
       }
@@ -227,7 +227,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
 
     return {
-      content: [{ type: "text", text: `錯誤：未知的工具 ${name}` }],
+      content: [{ type: "text", text: `Error: Unknown tool ${name}` }],
       isError: true,
     };
   } catch (error) {
@@ -235,7 +235,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       content: [
         {
           type: "text",
-          text: `錯誤：${error instanceof Error ? error.message : String(error)}`,
+          text: `Error: ${error instanceof Error ? error.message : String(error)}`,
         },
       ],
       isError: true,
