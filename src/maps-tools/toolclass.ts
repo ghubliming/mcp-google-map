@@ -24,6 +24,11 @@ interface PlaceResult {
   user_ratings_total?: number;
   opening_hours?: {
     open_now?: boolean;
+    periods?: Array<{
+      open: { day: number; time: string };
+      close: { day: number; time: string };
+    }>;
+    weekday_text?: string[];
   };
 }
 

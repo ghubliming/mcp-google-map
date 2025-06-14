@@ -119,7 +119,11 @@ export class PlacesSearcher {
           location: details.geometry?.location,
           rating: details.rating,
           total_ratings: details.user_ratings_total,
-          open_now: details.opening_hours?.open_now,
+          opening_hours: details.opening_hours ? {
+            open_now: details.opening_hours.open_now,
+            periods: details.opening_hours.periods,
+            weekday_text: details.opening_hours.weekday_text
+          } : undefined,
           phone: details.formatted_phone_number,
           website: details.website,
           price_level: details.price_level,

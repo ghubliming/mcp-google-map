@@ -134,6 +134,20 @@ async function testAllMCPTools() {
     log('✅ Place Details works!');
     log('Place name: ' + result.name);
     log('Rating: ' + result.rating);
+    if (result.opening_hours) {
+      log('Opening Hours:');
+      if (result.opening_hours.weekday_text) {
+        log('Weekly Schedule:');
+        result.opening_hours.weekday_text.forEach(day => log('  ' + day));
+      }
+      if (result.opening_hours.periods) {
+        log('Detailed Schedule:');
+        result.opening_hours.periods.forEach(period => {
+          log(`  Open: ${period.open.day} at ${period.open.time}`);
+          log(`  Close: ${period.close.day} at ${period.close.time}`);
+        });
+      }
+    }
   } catch (err) {
     testResults.placeDetails = {
       success: false,
