@@ -8,8 +8,6 @@ interface SearchParams {
   location: { lat: number; lng: number };
   radius?: number;
   keyword?: string;
-  openNow?: boolean;
-  minRating?: number;
 }
 
 interface PlaceResult {
@@ -57,7 +55,6 @@ export class GoogleMapsTools {
       location: params.location,
       radius: params.radius || 1000,
       keyword: params.keyword,
-      opennow: params.openNow,
       language: this.defaultLanguage,
       key: process.env.GOOGLE_MAPS_API_KEY || "",
     };
@@ -67,14 +64,7 @@ export class GoogleMapsTools {
         params: searchParams,
       });
 
-      let results = response.data.results;
-
-      // Filter by minimum rating if specified
-      if (params.minRating) {
-        results = results.filter((place) => (place.rating || 0) >= (params.minRating || 0));
-      }
-
-      return results as PlaceResult[];
+      return response.data.results as PlaceResult[];
     } catch (error) {
       console.error("Error in searchNearbyPlaces:", error);
       throw new Error("Error occurred while searching nearby places");

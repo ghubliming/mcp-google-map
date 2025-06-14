@@ -35,20 +35,16 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
 
     if (name === "search_nearby") {
-      const { center, keyword, radius, openNow, minRating } = args as {
+      const { center, keyword, radius } = args as {
         center: { value: string; isCoordinates: boolean };
         keyword?: string;
         radius?: number;
-        openNow?: boolean;
-        minRating?: number;
       };
 
       const result = await placesSearcher.searchNearby({
         center,
         keyword,
         radius,
-        openNow,
-        minRating,
       });
 
       if (!result.success) {

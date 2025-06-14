@@ -71,7 +71,7 @@ export class PlacesSearcher {
     this.mapsTools = new GoogleMapsTools();
   }
 
-  async searchNearby(params: { center: { value: string; isCoordinates: boolean }; keyword?: string; radius?: number; openNow?: boolean; minRating?: number }): Promise<SearchNearbyResponse> {
+  async searchNearby(params: { center: { value: string; isCoordinates: boolean }; keyword?: string; radius?: number }): Promise<SearchNearbyResponse> {
     try {
       // Ensure center parameter has isCoordinates flag
       const center = typeof params.center === 'string' 
@@ -84,8 +84,6 @@ export class PlacesSearcher {
         location,
         keyword: params.keyword,
         radius: params.radius,
-        openNow: params.openNow,
-        minRating: params.minRating,
       });
 
       return {

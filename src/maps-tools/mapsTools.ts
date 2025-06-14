@@ -22,17 +22,6 @@ export const SEARCH_NEARBY_TOOL = {
         description: "Search radius (in meters)",
         default: 1000,
       },
-      openNow: {
-        type: "boolean",
-        description: "Show only places that are currently open",
-        default: false,
-      },
-      minRating: {
-        type: "number",
-        description: "Minimum rating requirement (0-5)",
-        minimum: 0,
-        maximum: 5,
-      },
     },
     required: ["center"],
   },
