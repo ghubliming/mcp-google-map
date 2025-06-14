@@ -56,6 +56,7 @@ interface Review {
 
 interface ReviewOptions {
   maxReviews?: number;  // Number of reviews to return (default: 5, max: 5)
+  includeReviews?: boolean;  // Whether to include reviews in the response (default: false)
 }
 
 interface ApiResponse<T> {
@@ -115,25 +116,30 @@ export class GoogleMapsTools {
       throw new Error("Error occurred while searching nearby places");
     }
   }
-
   async getPlaceDetails(placeId: string, reviewOptions?: ReviewOptions) {
     try {
       console.log('Making API request for place details:', placeId);
+      
+      // Base fields without reviews
+      const baseFields = [
+        "name",
+        "rating",
+        "formatted_address",
+        "opening_hours",
+        "geometry",
+        "formatted_phone_number",
+        "website",
+        "price_level",
+        "user_ratings_total"
+      ];
+      
+      // Add reviews field only if explicitly requested
+      const fields = reviewOptions?.includeReviews ? [...baseFields, "reviews"] : baseFields;
+      
       const response = await this.client.placeDetails({
         params: {
           place_id: placeId,
-          fields: [
-            "name",
-            "rating",
-            "formatted_address",
-            "opening_hours",
-            "reviews",
-            "geometry",
-            "formatted_phone_number",
-            "website",
-            "price_level",
-            "user_ratings_total"
-          ],
+          fields: fields,
           language: this.defaultLanguage,
           key: process.env.GOOGLE_MAPS_API_KEY || "",
         },
@@ -156,8 +162,8 @@ export class GoogleMapsTools {
         };
       }
 
-      // Process reviews - limit number if specified
-      if (response.data.result.reviews) {
+      // Process reviews - limit number if specified and reviews are included
+      if (response.data.result.reviews && reviewOptions?.includeReviews) {
         let reviews = [...response.data.result.reviews];
         
         // Limit the number of reviews if specified (max 5)
@@ -180,11 +186,11 @@ export class GoogleMapsTools {
         error: error instanceof Error ? error.message : "Error occurred while getting place details"
       };
     }
-  }
-
-  async getPlaceDetailsV1(placeId: string): Promise<ApiResponse<PlaceDetailsResponse>> {
+  }  async getPlaceDetailsV1(placeId: string, fields?: string[]): Promise<ApiResponse<PlaceDetailsResponse>> {
     try {
       console.log('Making API request for place details (v1):', placeId);
+      
+      const fieldMask = fields ? fields.join(',') : 'displayName,reviewSummary,googleMapsLinks.reviewsUri';
       
       // For API v1, we need to use the new endpoint and format
       const url = `https://places.googleapis.com/v1/places/${placeId}`;
@@ -193,7 +199,7 @@ export class GoogleMapsTools {
         headers: {
           'Content-Type': 'application/json',
           'X-Goog-Api-Key': process.env.GOOGLE_MAPS_API_KEY || "",
-          'X-Goog-FieldMask': 'displayName,reviewSummary,googleMapsLinks.reviewsUri'
+          'X-Goog-FieldMask': fieldMask
         }
       });
 
@@ -211,8 +217,7 @@ export class GoogleMapsTools {
       return {
         success: true,
         data: data as PlaceDetailsResponse
-      };
-    } catch (error) {
+      };    } catch (error) {
       console.error("Error in getPlaceDetailsV1:", error);
       return {
         success: false,

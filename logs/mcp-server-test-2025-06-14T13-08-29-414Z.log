@@ -27,30 +27,29 @@ Testing Place Details...
 ✅ Place Details works!
 Place name: Eiffel Tower
 Rating: 4.7
-Opening Hours:
-Weekly Schedule:
-  Monday: 9:30 AM – 11:00 PM
-  Tuesday: 9:30 AM – 11:00 PM
-  Wednesday: 9:30 AM – 11:00 PM
-  Thursday: 9:30 AM – 11:00 PM
-  Friday: 9:30 AM – 11:00 PM
-  Saturday: 9:30 AM – 11:00 PM
-  Sunday: 9:30 AM – 11:00 PM
-Detailed Schedule:
-  Open: 0 at 0930
-  Close: 0 at 2300
-  Open: 1 at 0930
-  Close: 1 at 2300
-  Open: 2 at 0930
-  Close: 2 at 2300
-  Open: 3 at 0930
-  Close: 3 at 2300
-  Open: 4 at 0930
-  Close: 4 at 2300
-  Open: 5 at 0930
-  Close: 5 at 2300
-  Open: 6 at 0930
-  Close: 6 at 2300
+Note: Reviews are now handled separately via get_reviews tool
+
+Testing Get Reviews MCP Tool...
+✅ Get Reviews MCP Tool works!
+Place ID: ChIJ4zGFAZpYwokRGUGph3Mf37k
+Overall Rating: 4.8
+Total Ratings: 284490
+Reviews found: 5
+
+Traditional Reviews:
+  Review 1:
+    Rating: 5
+    Author: Mariah McCoy
+    Text: Rating: ⭐️⭐️⭐️⭐️⭐️
+
+Central Park is truly a breath of fresh air in the middle of the busy city! The ...
+  Review 2:
+    Rating: 5
+    Author: Irina Bykova (The Crispy Critic)
+    Text: Tucked into the wild rhythm of Manhattan, Central Park is where the city breathes.
+
+Whether you’re s...
+No V1 review summary available (may not be supported for this place)
 
 Testing Elevation...
 ✅ Elevation works!

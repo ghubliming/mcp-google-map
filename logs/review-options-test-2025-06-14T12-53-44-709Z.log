@@ -1,0 +1,60 @@
+[14:53:44] 
+Testing Place Details with Review Options...
+[14:53:44] Note: Our new approach separates reviews from basic place details
+[14:53:44] Got place ID: ChIJLU7jZClu5kcR4PcOOO6p3I0
+[14:53:44] 
+Test 1: Basic Place Details (no reviews by default)
+[14:53:44] ✅ Basic Place Details Test:
+[14:53:44] Place Name: Eiffel Tower
+[14:53:44] Rating: 4.7
+[14:53:44] Address: Av. Gustave Eiffel, 75007 Paris, France
+[14:53:44] Reviews are not included by default (as expected)
+[14:53:44] 
+Test 2: Get Reviews Separately (default 5 reviews)
+[14:53:45] ✅ Default Reviews Test:
+[14:53:45] Overall Rating: 4.7
+[14:53:45] Total Ratings: 443547
+[14:53:45] Number of reviews returned: 5
+[14:53:45] 
+Review 1:
+[14:53:45]   Rating: 5
+[14:53:45]   Author: moonlightroxx
+[14:53:45]   Time: 30/05/2025, 10:31:51
+[14:53:45]   Text: Incredible sightseeing that you must see at least once in your life! It was more spectacular in real...
+[14:53:45] 
+Review 2:
+[14:53:45]   Rating: 5
+[14:53:45]   Author: Happy
+[14:53:45]   Time: 29/05/2025, 13:41:52
+[14:53:45]   Text: We visited Paris during the Olympic Games, and it was an unforgettable experience.
+The city was full...
+[14:53:45] 
+Review 3:
+[14:53:45]   Rating: 5
+[14:53:45]   Author: Alpanna Singh
+[14:53:45]   Time: 08/06/2025, 08:25:54
+[14:53:45]   Text: Go prepared for cold winds in the month of may end, especially in the evening. Really beautiful and ...
+[14:53:45] 
+Review 4:
+[14:53:45]   Rating: 5
+[14:53:45]   Author: nikos frantzis
+[14:53:45]   Time: 06/05/2025, 21:57:45
+[14:53:45]   Text: Eiffel Tower: An Imposing Symbol with History and a Magical Atmosphere
+
+The Eiffel Tower (Tour Eiffe...
+[14:53:45] 
+Review 5:
+[14:53:45]   Rating: 5
+[14:53:45]   Author: Bülent Kaplan
+[14:53:45]   Time: 28/04/2025, 10:12:11
+[14:53:45]   Text: It was great to see Paris again from the second floor of Eiffel tower. It wasn't too crowded. We wal...
+[14:53:45] 
+Test 3: Limited Reviews (3 reviews, no summary)
+[14:53:45] ✅ Limited Reviews Test:
+[14:53:45] Number of reviews returned: 3 (max 3 requested)
+[14:53:45] Review summary included: No (as expected)
+[14:53:45] 
+Test Results Summary:
+[14:53:45] basicDetails: ✅ PASS
+[14:53:45] defaultReviews: ✅ PASS
+[14:53:45] limitedReviews: ✅ PASS

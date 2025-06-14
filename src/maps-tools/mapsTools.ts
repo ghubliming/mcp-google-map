@@ -169,3 +169,28 @@ export const GET_PLACE_DETAILS_TOOL = {
     required: ["placeId"],
   },
 };
+
+export const GET_REVIEWS_TOOL = {
+  name: "get_reviews",
+  description: "Get reviews and review summary for a specific place (combines old reviews and new V1 review summary)",
+  inputSchema: {
+    type: "object",
+    properties: {
+      placeId: {
+        type: "string",
+        description: "Google Maps place ID",
+      },
+      maxReviews: {
+        type: "number",
+        description: "Maximum number of individual reviews to return (default: 5, max: 5)",
+        default: 5,
+      },
+      includeReviewSummary: {
+        type: "boolean",
+        description: "Whether to include AI-generated review summary from V1 API (default: true)",
+        default: true,
+      },
+    },
+    required: ["placeId"],
+  },
+};

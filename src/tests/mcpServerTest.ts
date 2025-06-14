@@ -1,5 +1,6 @@
 import { GoogleMapsTools } from '../maps-tools/toolclass.js';
 import { PlacesSearcher, PlaceDetailsResponse, GeocodeResponse } from '../maps-tools/searchPlaces.js';
+import { Review } from '../maps-tools/placeReviews.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
@@ -123,7 +124,7 @@ async function testMCPServer() {
     };
   }
 
-  // Test 6: Place Details
+  // Test 6: Place Details (without reviews)
   try {
     log('\nTesting Place Details...');
     // First get a place ID using geocoding
@@ -144,15 +145,15 @@ async function testMCPServer() {
     log('✅ Place Details works!');
     log('Place name: ' + result.data.name);
     log('Rating: ' + result.data.rating);
-    if (result.data.opening_hours) {
+    if (result.data.openingHours) {
       log('Opening Hours:');
-      if (result.data.opening_hours.weekday_text) {
+      if (result.data.openingHours.weekdayText) {
         log('Weekly Schedule:');
-        result.data.opening_hours.weekday_text.forEach((day: string) => log('  ' + day));
+        result.data.openingHours.weekdayText.forEach((day: string) => log('  ' + day));
       }
-      if (result.data.opening_hours.periods) {
+      if (result.data.openingHours.periods) {
         log('Detailed Schedule:');
-        result.data.opening_hours.periods.forEach((period: { open?: { day: number; time: string }; close?: { day: number; time: string } }) => {
+        result.data.openingHours.periods.forEach((period: { open?: { day: number; time: string }; close?: { day: number; time: string } }) => {
           if (period.open && period.close) {
             log(`  Open: ${period.open.day} at ${period.open.time}`);
             log(`  Close: ${period.close.day} at ${period.close.time}`);
@@ -160,18 +161,7 @@ async function testMCPServer() {
         });
       }
     }
-    if (result.data.reviews) {
-      log('\nReviews:');
-      log(`Overall Rating: ${result.data.rating} (${result.data.total_ratings} total ratings)`);
-      log('Recent Reviews:');
-      result.data.reviews.slice(0, 3).forEach((review: { rating: number; text: string; time: number; author_name: string }, index: number) => {
-        log(`\nReview ${index + 1}:`);
-        log(`  Rating: ${review.rating}`);
-        log(`  Author: ${review.author_name}`);
-        log(`  Time: ${new Date(Number(review.time) * 1000).toLocaleString()}`);
-        log(`  Text: ${review.text.substring(0, 100)}${review.text.length > 100 ? '...' : ''}`);
-      });
-    }
+    log('Note: Reviews are now handled separately via get_reviews tool');
   } catch (err) {
     testResults.placeDetails = {
       success: false,
@@ -180,7 +170,62 @@ async function testMCPServer() {
     log('❌ Place Details failed: ' + (err instanceof Error ? err.message : String(err)));
   }
 
-  // Test 7: Elevation
+  // Test 7: Get Reviews (New MCP Tool)
+  try {
+    log('\nTesting Get Reviews MCP Tool...');
+    // Get a place ID for testing
+    const geocodeResult = await tools.geocode('Central Park, New York');
+    const placeId = geocodeResult.place_id;
+    if (!placeId) {
+      throw new Error('Failed to get place ID for reviews test');
+    }
+
+    // Test the new getReviews method via PlacesSearcher
+    const placesSearcher = new PlacesSearcher(tools);
+    const reviewsResult = await placesSearcher.getReviews(placeId, 5, true);
+    
+    if (!reviewsResult.success) {
+      throw new Error(reviewsResult.error || 'Failed to get reviews');
+    }
+    
+    testResults.getReviews = {
+      success: true
+    };
+    log('✅ Get Reviews MCP Tool works!');
+    log('Place ID: ' + placeId);
+    
+    if (reviewsResult.data) {
+      log('Overall Rating: ' + reviewsResult.data.overall_rating);
+      log('Total Ratings: ' + reviewsResult.data.total_ratings);
+      log('Reviews found: ' + (reviewsResult.data.reviews ? reviewsResult.data.reviews.length : 0));
+      
+      if (reviewsResult.data.reviews && reviewsResult.data.reviews.length > 0) {
+        log('\nTraditional Reviews:');
+        reviewsResult.data.reviews.slice(0, 2).forEach((review: Review, index: number) => {
+          log(`  Review ${index + 1}:`);
+          log(`    Rating: ${review.rating}`);
+          log(`    Author: ${review.author_name}`);
+          log(`    Text: ${review.text.substring(0, 100)}${review.text.length > 100 ? '...' : ''}`);
+        });
+      }
+      
+      if (reviewsResult.data.review_summary) {
+        log('\nV1 Review Summary:');
+        log(`  Summary Text: ${reviewsResult.data.review_summary.text.substring(0, 200)}${reviewsResult.data.review_summary.text.length > 200 ? '...' : ''}`);
+      } else {
+        log('No V1 review summary available (may not be supported for this place)');
+      }
+    }
+    
+  } catch (err) {
+    testResults.getReviews = {
+      success: false,
+      error: err instanceof Error ? err.message : String(err)
+    };
+    log('❌ Get Reviews MCP Tool failed: ' + (err instanceof Error ? err.message : String(err)));
+  }
+
+  // Test 8: Elevation
   try {
     log('\nTesting Elevation...');
     const locations = [

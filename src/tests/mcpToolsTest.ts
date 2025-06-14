@@ -1,5 +1,5 @@
 import { GoogleMapsTools } from '../maps-tools/toolclass.js';
-import { PlacesSearcher, PlaceDetailsResponse, GeocodeResponse } from '../maps-tools/searchPlaces.js';
+import { PlacesSearcher } from '../maps-tools/searchPlaces.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
@@ -25,19 +25,23 @@ async function testAllMCPTools() {
     process.exit(1);
   }
 
-  const tools = new GoogleMapsTools();
+  const mapsTools = new GoogleMapsTools();
+  const placesSearcher = new PlacesSearcher(mapsTools);
   const testResults: { [key: string]: { success: boolean; error?: string } } = {};
 
   // Test 1: Geocoding
   try {
     log('\nTesting Geocoding...');
-    const result = await tools.geocode('1600 Amphitheatre Parkway, Mountain View, CA');
+    const result = await placesSearcher.geocode('1600 Amphitheatre Parkway, Mountain View, CA');
+    if (!result.success || !result.data) {
+      throw new Error('Failed to geocode: ' + (result.error || 'Unknown error'));
+    }
     testResults.geocoding = {
       success: true
     };
     log('✅ Geocoding works!');
-    log('Location: ' + JSON.stringify(result.location));
-    log('Formatted address: ' + result.formatted_address);
+    log('Location: ' + JSON.stringify(result.data.location));
+    log('Formatted address: ' + result.data.formatted_address);
   } catch (err) {
     testResults.geocoding = {
       success: false,
@@ -48,12 +52,15 @@ async function testAllMCPTools() {
   // Test 2: Reverse Geocoding
   try {
     log('\nTesting Reverse Geocoding...');
-    const result = await tools.reverseGeocode(37.4224764, -122.0842499);
+    const result = await placesSearcher.reverseGeocode(37.4224764, -122.0842499);
+    if (!result.success || !result.data) {
+      throw new Error('Failed to reverse geocode: ' + (result.error || 'Unknown error'));
+    }
     testResults.reverseGeocoding = {
       success: true
     };
     log('✅ Reverse Geocoding works!');
-    log('Address: ' + result.formatted_address);
+    log('Formatted address: ' + result.data.formatted_address);
   } catch (err) {
     testResults.reverseGeocoding = {
       success: false,
@@ -61,19 +68,25 @@ async function testAllMCPTools() {
     };
   }
 
-  // Test 3: Search Nearby Places
+  // Test 3: Search Nearby
   try {
-    log('\nTesting Search Nearby Places...');
-    const result = await tools.searchNearbyPlaces({
-      location: { lat: 37.4224764, lng: -122.0842499 },
-      radius: 1000,
-      keyword: 'restaurant'
+    log('\nTesting Search Nearby...');
+    const result = await placesSearcher.searchNearby({
+      center: { value: '40.7128,-74.0060', isCoordinates: true },
+      keyword: 'restaurant',
+      radius: 1000
     });
+    if (!result.success || !result.data) {
+      throw new Error('Failed to search nearby: ' + (result.error || 'Unknown error'));
+    }
     testResults.searchNearby = {
       success: true
     };
-    log('✅ Search Nearby Places works!');
-    log('Found ' + result.length + ' places');
+    log('✅ Search Nearby works!');
+    log('Found ' + result.data.length + ' restaurants');
+    if (result.data.length > 0) {
+      log('First result: ' + result.data[0].name);
+    }
   } catch (err) {
     testResults.searchNearby = {
       success: false,
@@ -84,16 +97,19 @@ async function testAllMCPTools() {
   // Test 4: Distance Matrix
   try {
     log('\nTesting Distance Matrix...');
-    const result = await tools.calculateDistanceMatrix(
-      ['New York, NY', 'Boston, MA'],
-      ['Washington, DC', 'Philadelphia, PA']
+    const result = await placesSearcher.calculateDistanceMatrix(
+      ['New York, NY'],
+      ['Boston, MA', 'Philadelphia, PA'],
+      'driving'
     );
+    if (!result.success || !result.data) {
+      throw new Error('Failed to calculate distance matrix: ' + (result.error || 'Unknown error'));
+    }
     testResults.distanceMatrix = {
       success: true
     };
     log('✅ Distance Matrix works!');
-    log('Distances: ' + JSON.stringify(result.distances));
-    log('Durations: ' + JSON.stringify(result.durations));
+    log('Distances calculated successfully');
   } catch (err) {
     testResults.distanceMatrix = {
       success: false,
@@ -104,18 +120,21 @@ async function testAllMCPTools() {
   // Test 5: Directions
   try {
     log('\nTesting Directions...');
-    const result = await tools.getDirections(
+    const result = await placesSearcher.getDirections(
       'New York, NY',
       'Boston, MA',
       'driving'
     );
+    if (!result.success || !result.data) {
+      throw new Error('Failed to get directions: ' + (result.error || 'Unknown error'));
+    }
     testResults.directions = {
       success: true
     };
     log('✅ Directions works!');
-    log('Route summary: ' + result.summary);
-    log('Total distance: ' + result.total_distance.text);
-    log('Total duration: ' + result.total_duration.text);
+    log('Route summary: ' + result.data.summary);
+    log('Total distance: ' + result.data.total_distance.text);
+    log('Total duration: ' + result.data.total_duration.text);
   } catch (err) {
     testResults.directions = {
       success: false,
@@ -123,26 +142,18 @@ async function testAllMCPTools() {
     };
   }
 
-  // Test 6: Place Details
+  // Test 6: Place Details (Basic - no reviews)
   try {
-    log('\nTesting Place Details...');
+    log('\nTesting Place Details (Basic)...');
     // First get a place ID using geocoding
-    const geocodeResult = await tools.geocode('Eiffel Tower, Paris');
-    console.log('Geocode result:', geocodeResult);
-    const placeId = geocodeResult.place_id;
-    if (!placeId) {
-      throw new Error('Failed to get place ID');
+    const geocodeResult = await placesSearcher.geocode('Eiffel Tower, Paris');
+    if (!geocodeResult.success || !geocodeResult.data) {
+      throw new Error('Failed to get place ID for geocoding');
     }
+    const placeId = geocodeResult.data.place_id;
     log('Got place ID: ' + placeId);
 
-    // Test with different review options
-    const reviewOptions = {
-      maxReviews: 5,
-      sortBy: 'most_recent' as const
-    };
-
-    const result = await tools.getPlaceDetails(placeId, reviewOptions) as PlaceDetailsResponse;
-    console.log('Place details result:', result);
+    const result = await placesSearcher.getPlaceDetails(placeId);
     if (!result.success || !result.data) {
       throw new Error('Failed to get place details: ' + (result.error || 'Unknown error'));
     }
@@ -153,34 +164,13 @@ async function testAllMCPTools() {
     log('✅ Place Details works!');
     log('Place name: ' + result.data.name);
     log('Rating: ' + result.data.rating);
-    if (result.data.opening_hours) {
-      log('Opening Hours:');
-      if (result.data.opening_hours.weekday_text) {
+    log('Address: ' + result.data.formattedAddress);
+    if (result.data.openingHours) {
+      log('Opening Hours Available: Yes');
+      if (result.data.openingHours.weekdayText) {
         log('Weekly Schedule:');
-        result.data.opening_hours.weekday_text.forEach((day: string) => log('  ' + day));
+        result.data.openingHours.weekdayText.forEach((day: string) => log('  ' + day));
       }
-      if (result.data.opening_hours.periods) {
-        log('Detailed Schedule:');
-        result.data.opening_hours.periods.forEach((period: { open?: { day: number; time: string }; close?: { day: number; time: string } }) => {
-          if (period.open && period.close) {
-            log(`  Open: ${period.open.day} at ${period.open.time}`);
-            log(`  Close: ${period.close.day} at ${period.close.time}`);
-          }
-        });
-      }
-    }
-    if (result.data?.reviews) {
-      log('\nReviews:');
-      const totalRatings = result.data.user_ratings_total ?? 0;
-      log(`Overall Rating: ${result.data.rating} (${totalRatings} total ratings)`);
-      log('Recent Reviews:');
-      result.data.reviews.slice(0, 3).forEach((review: { rating: number; text: string; time: number; author_name: string }, index: number) => {
-        log(`\nReview ${index + 1}:`);
-        log(`  Rating: ${review.rating}`);
-        log(`  Author: ${review.author_name}`);
-        log(`  Time: ${new Date(Number(review.time) * 1000).toLocaleString()}`);
-        log(`  Text: ${review.text.substring(0, 100)}${review.text.length > 100 ? '...' : ''}`);
-      });
     }
   } catch (err) {
     testResults.placeDetails = {
@@ -188,10 +178,47 @@ async function testAllMCPTools() {
       error: err instanceof Error ? err.message : String(err)
     };
     log('❌ Place Details failed: ' + (err instanceof Error ? err.message : String(err)));
-    console.error('Full error:', err);
   }
 
-  // Test 7: Elevation
+  // Test 7: Reviews (New Approach)
+  try {
+    log('\nTesting Reviews (New Approach)...');
+    const geocodeResult = await placesSearcher.geocode('Dumpling House, New York');
+    if (!geocodeResult.success || !geocodeResult.data) {
+      throw new Error('Failed to get place ID for reviews test');
+    }
+    const placeId = geocodeResult.data.place_id;
+    log('Got place ID for reviews: ' + placeId);
+
+    const result = await placesSearcher.getReviews(placeId, 3, true);
+    if (!result.success || !result.data) {
+      log('⚠️ Reviews may not be available: ' + (result.error || 'Unknown error'));
+      testResults.reviews = { success: false, error: result.error };
+    } else {
+      testResults.reviews = { success: true };
+      log('✅ Reviews work!');
+      log(`Overall Rating: ${result.data.overall_rating}`);
+      log(`Total Ratings: ${result.data.total_ratings}`);
+      log(`Reviews Count: ${result.data.reviews.length}`);
+      log(`Review Summary Available: ${result.data.review_summary ? 'Yes' : 'No'}`);
+      
+      if (result.data.reviews.length > 0) {
+        log('\nFirst Review:');
+        const review = result.data.reviews[0];
+        log(`  Rating: ${review.rating}`);
+        log(`  Author: ${review.author_name}`);
+        log(`  Text Preview: ${review.text.substring(0, 100)}...`);
+      }
+    }
+  } catch (err) {
+    testResults.reviews = {
+      success: false,
+      error: err instanceof Error ? err.message : String(err)
+    };
+    log('❌ Reviews failed: ' + (err instanceof Error ? err.message : String(err)));
+  }
+
+  // Test 8: Elevation
   try {
     log('\nTesting Elevation...');
     const locations = [
@@ -199,13 +226,16 @@ async function testAllMCPTools() {
       { latitude: 27.9881, longitude: 86.9250 },   // Mount Everest
       { latitude: 36.7783, longitude: -119.4179 }  // California
     ];
-    const result = await tools.getElevation(locations);
+    const result = await placesSearcher.getElevation(locations);
+    if (!result.success || !result.data) {
+      throw new Error('Failed to get elevation: ' + (result.error || 'Unknown error'));
+    }
     testResults.elevation = {
       success: true
     };
     log('✅ Elevation works!');
     log('Elevation results:');
-    result.forEach((item, index) => {
+    result.data.forEach((item: any, index: number) => {
       log(`  Location ${index + 1}: ${item.elevation.toFixed(2)} meters`);
     });
   } catch (err) {
@@ -236,4 +266,4 @@ testAllMCPTools().catch(err => {
   log('Test failed with error: ' + err);
   logStream.end();
   process.exit(1);
-}); 
+});

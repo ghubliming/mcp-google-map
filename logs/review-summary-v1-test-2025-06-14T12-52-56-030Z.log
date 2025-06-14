@@ -1,0 +1,40 @@
+[14:52:56] 
+Testing Review Summary with new approach...
+[14:52:56] Note: Testing with Dumpling House in New York
+[14:52:56] Using place ID: ChIJD2l2k7ZL0YkRC80d-3MV1lM
+[14:52:56] 
+Test 1: Get Review Summary (via PlaceReviews class)
+[14:52:56] ✅ Review Summary Test (via PlaceReviews):
+[14:52:56] 
+Review Summary Data:
+[14:52:56]   Text: Diners say this lunch restaurant serves up delicious dumplings, including pork belly buns, soup dumplings, and steamed barbecue pork dumplings, alongside tasty fried rice and noodle dishes. They also highlight the friendly and efficient service, reasonable prices, and generous portions.
+[14:52:56]   Disclosure: Summarized with Gemini
+[14:52:56]   Flag Content URI: https://www.google.com/local/review/rap/report?postId=5%401:CAIQACodChtyc19oOkE4blltMzB1eXpWblVKUjFBQXFGbWc%7CCAIQACoqChtyc19oOkE4blltMzB1eXpWblVKUjFBQXFGbWcSCwiBl_3BBhCA249g&d=17924085&t=8
+[14:52:56]   Reviews URI: https://www.google.com/maps/place//data=!4m4!3m3!1s0x89d14bb69376690f:0x53d61573fb1dcd0b!9m1!1b1
+[14:52:56] 
+Test 2: Get Combined Reviews (old + V1 summary)
+[14:52:56] ✅ Combined Reviews Test:
+[14:52:56]   Overall Rating: 4.5
+[14:52:56]   Total Ratings: 1050
+[14:52:56]   Number of Reviews: 5
+[14:52:56]   Review Summary Included: Yes
+[14:52:56]   Summary Text Preview: Diners say this lunch restaurant serves up delicious dumplings, including pork belly buns, soup dump...
+[14:52:56] 
+Test 3: Direct V1 API call (fallback test)
+[14:52:56] ✅ Direct V1 API Test:
+[14:52:56]   Place Name: Dumpling House
+[14:52:56]   Review Summary Available: Yes
+[14:52:56]   Summary Preview: Diners say this lunch restaurant serves up delicious dumplings, including pork belly buns, soup dump...
+[14:52:56] 
+Test 4: Error Handling - Invalid Place ID
+[14:52:56] ✅ Error Handling Test:
+[14:52:56] Expected error received: The provided Place ID: invalid_place_id is not valid.
+
+[14:52:56] 
+Test Results Summary:
+[14:52:56] reviewSummary: ✅ PASS
+[14:52:56] combinedReviews: ✅ PASS
+[14:52:56] v1Direct: ✅ PASS
+[14:52:56] errorHandling: ✅ PASS
+[14:52:56]   Error: The provided Place ID: invalid_place_id is not valid.
+

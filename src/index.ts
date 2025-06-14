@@ -3,11 +3,13 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
-import { DIRECTIONS_TOOL, DISTANCE_MATRIX_TOOL, ELEVATION_TOOL, GEOCODE_TOOL, GET_PLACE_DETAILS_TOOL, REVERSE_GEOCODE_TOOL, SEARCH_NEARBY_TOOL } from "./maps-tools/mapsTools.js";
+import { DIRECTIONS_TOOL, DISTANCE_MATRIX_TOOL, ELEVATION_TOOL, GEOCODE_TOOL, GET_PLACE_DETAILS_TOOL, GET_REVIEWS_TOOL, REVERSE_GEOCODE_TOOL, SEARCH_NEARBY_TOOL } from "./maps-tools/mapsTools.js";
 import { PlacesSearcher } from "./maps-tools/searchPlaces.js";
+import { GoogleMapsTools } from "./maps-tools/toolclass.js";
 
-const tools = [SEARCH_NEARBY_TOOL, GET_PLACE_DETAILS_TOOL, GEOCODE_TOOL, REVERSE_GEOCODE_TOOL, DISTANCE_MATRIX_TOOL, DIRECTIONS_TOOL, ELEVATION_TOOL];
-const placesSearcher = new PlacesSearcher();
+const tools = [SEARCH_NEARBY_TOOL, GET_PLACE_DETAILS_TOOL, GET_REVIEWS_TOOL, GEOCODE_TOOL, REVERSE_GEOCODE_TOOL, DISTANCE_MATRIX_TOOL, DIRECTIONS_TOOL, ELEVATION_TOOL];
+const mapsTools = new GoogleMapsTools();
+const placesSearcher = new PlacesSearcher(mapsTools);
 
 const server = new Server(
   {
@@ -75,6 +77,37 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       if (!result.success) {
         return {
           content: [{ type: "text", text: result.error || "Failed to get place details" }],
+          isError: true,
+        };
+      }
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result.data, null, 2),
+          },
+        ],
+        isError: false,
+      };
+    }
+
+    if (name === "get_reviews") {
+      const { placeId, maxReviews, includeReviewSummary } = args as {
+        placeId: string;
+        maxReviews?: number;
+        includeReviewSummary?: boolean;
+      };
+
+      const result = await placesSearcher.getReviews(
+        placeId, 
+        maxReviews || 5, 
+        includeReviewSummary !== undefined ? includeReviewSummary : true
+      );
+
+      if (!result.success) {
+        return {
+          content: [{ type: "text", text: result.error || "Failed to get reviews" }],
           isError: true,
         };
       }

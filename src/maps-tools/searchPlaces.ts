@@ -31,26 +31,6 @@ export interface PlaceDetailsResponse {
     formattedPhoneNumber?: string;
     website?: string;
     priceLevel?: number;
-    reviews?: Array<{
-      rating: number;
-      text: string;
-      time: number;
-      authorName: string;
-    }>;
-    reviewSummary?: {
-      text: {
-        text: string;
-        languageCode: string;
-      };
-      flagContentUri: string;
-      disclosureText: {
-        text: string;
-        languageCode: string;
-      };
-    };
-    googleMapsLinks?: {
-      reviewsUri: string;
-    };
   };
 }
 
@@ -152,39 +132,34 @@ export class PlacesSearcher {
       };
     }
   }
-
   async getPlaceDetails(placeId: string): Promise<PlaceDetailsResponse> {
     try {
       console.log('Getting place details for ID:', placeId);
       const details = await this.mapsTools.getPlaceDetails(placeId);
       console.log('Place details received:', details);
       
-      if (!details) {
+      if (!details.success || !details.data) {
         console.error('No place details returned from API');
         return {
           success: false,
-          error: "No place details found"
+          error: details.error || "No place details found"
         };
       }
-
-      const reviews = await this.placeReviews.getPlaceReviews(placeId);
-      const reviewSummary = await this.placeReviews.getReviewSummary(placeId);
-      console.log('Reviews received:', reviews);
 
       return {
         success: true,
         data: {
-          name: details.name,
-          formattedAddress: details.formatted_address,
-          location: details.geometry?.location ? {
-            latitude: details.geometry.location.lat,
-            longitude: details.geometry.location.lng
+          name: details.data.name,
+          formattedAddress: details.data.formatted_address,
+          location: details.data.geometry?.location ? {
+            latitude: details.data.geometry.location.lat,
+            longitude: details.data.geometry.location.lng
           } : undefined,
-          rating: details.rating,
-          userRatingCount: details.user_ratings_total,
-          openingHours: details.opening_hours ? {
-            openNow: details.opening_hours.open_now,
-            periods: details.opening_hours.periods?.map(period => ({
+          rating: details.data.rating,
+          userRatingCount: details.data.user_ratings_total,
+          openingHours: details.data.opening_hours ? {
+            openNow: details.data.opening_hours.open_now,
+            periods: details.data.opening_hours.periods?.map(period => ({
               open: period.open ? {
                 day: period.open.day,
                 time: period.open.time || ''
@@ -194,13 +169,11 @@ export class PlacesSearcher {
                 time: period.close.time || ''
               } : undefined
             })),
-            weekdayText: details.opening_hours.weekday_text
+            weekdayText: details.data.opening_hours.weekday_text
           } : undefined,
-          formattedPhoneNumber: details.formatted_phone_number,
-          website: details.website,
-          priceLevel: details.price_level,
-          reviews: reviews.success ? reviews.data?.reviews : undefined,
-          reviewSummary: reviewSummary.success ? reviewSummary.data : undefined
+          formattedPhoneNumber: details.data.formatted_phone_number,
+          website: details.data.website,
+          priceLevel: details.data.price_level,
         },
       };
     } catch (error) {
@@ -295,6 +268,28 @@ export class PlacesSearcher {
       return {
         success: false,
         error: error instanceof Error ? error.message : "Error occurred while getting elevation data",
+      };
+    }
+  }
+
+  async getReviews(placeId: string, maxReviews: number = 5, includeReviewSummary: boolean = true): Promise<any> {
+    try {
+      console.log(`Getting reviews for place ID: ${placeId}, maxReviews: ${maxReviews}, includeReviewSummary: ${includeReviewSummary}`);
+      
+      if (includeReviewSummary) {
+        // Get combined reviews (old reviews + V1 review summary)
+        const result = await this.placeReviews.getCombinedReviews(placeId, maxReviews);
+        return result;
+      } else {
+        // Get only the old reviews
+        const result = await this.placeReviews.getPlaceReviews(placeId, maxReviews);
+        return result;
+      }
+    } catch (error) {
+      console.error('Error in getReviews:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Error occurred while getting reviews",
       };
     }
   }

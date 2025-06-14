@@ -1,0 +1,56 @@
+
+Testing Geocoding...
+✅ Geocoding works!
+Location: {"lat":37.4220094,"lng":-122.0847525}
+Formatted address: 1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA
+
+Testing Reverse Geocoding...
+✅ Reverse Geocoding works!
+Formatted address: 1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA
+
+Testing Search Nearby...
+✅ Search Nearby works!
+Found 20 restaurants
+First result: ZAZA
+
+Testing Distance Matrix...
+✅ Distance Matrix works!
+Distances calculated successfully
+
+Testing Directions...
+✅ Directions works!
+Route summary: I-90 E
+Total distance: 214 mi
+Total duration: 3 hours 37 mins
+
+Testing Place Details (Basic)...
+Got place ID: ChIJLU7jZClu5kcR4PcOOO6p3I0
+✅ Place Details works!
+Place name: Eiffel Tower
+Rating: 4.7
+Address: Av. Gustave Eiffel, 75007 Paris, France
+Opening Hours Available: Yes
+Weekly Schedule:
+  Monday: 9:30 AM – 11:00 PM
+  Tuesday: 9:30 AM – 11:00 PM
+  Wednesday: 9:30 AM – 11:00 PM
+  Thursday: 9:30 AM – 11:00 PM
+  Friday: 9:30 AM – 11:00 PM
+  Saturday: 9:30 AM – 11:00 PM
+  Sunday: 9:30 AM – 11:00 PM
+
+Testing Reviews (New Approach)...
+Got place ID for reviews: ChIJxQ5iVTRFwokRgCZVTKe-oo4
+✅ Reviews work!
+Overall Rating: 4
+Total Ratings: 2
+Reviews Count: 2
+Review Summary Available: No
+
+First Review:
+  Rating: 3
+  Author: Amy Ng
+  Text Preview: They're opened for business!...
+
+Testing Elevation...
+✅ Elevation works!
