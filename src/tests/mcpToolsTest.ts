@@ -1,4 +1,5 @@
 import { GoogleMapsTools } from '../maps-tools/toolclass.js';
+import { PlacesSearcher, PlaceDetailsResponse, GeocodeResponse } from '../maps-tools/searchPlaces.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
@@ -127,32 +128,61 @@ async function testAllMCPTools() {
     log('\nTesting Place Details...');
     // First get a place ID using geocoding
     const geocodeResult = await tools.geocode('Eiffel Tower, Paris');
-    const result = await tools.getPlaceDetails(geocodeResult.place_id);
+    console.log('Geocode result:', geocodeResult);
+    const placeId = geocodeResult.place_id;
+    if (!placeId) {
+      throw new Error('Failed to get place ID');
+    }
+    log('Got place ID: ' + placeId);
+
+    const result = await tools.getPlaceDetails(placeId) as PlaceDetailsResponse;
+    console.log('Place details result:', result);
+    if (!result.success || !result.data) {
+      throw new Error('Failed to get place details: ' + (result.error || 'Unknown error'));
+    }
+
     testResults.placeDetails = {
       success: true
     };
     log('✅ Place Details works!');
-    log('Place name: ' + result.name);
-    log('Rating: ' + result.rating);
-    if (result.opening_hours) {
+    log('Place name: ' + result.data.name);
+    log('Rating: ' + result.data.rating);
+    if (result.data.opening_hours) {
       log('Opening Hours:');
-      if (result.opening_hours.weekday_text) {
+      if (result.data.opening_hours.weekday_text) {
         log('Weekly Schedule:');
-        result.opening_hours.weekday_text.forEach(day => log('  ' + day));
+        result.data.opening_hours.weekday_text.forEach((day: string) => log('  ' + day));
       }
-      if (result.opening_hours.periods) {
+      if (result.data.opening_hours.periods) {
         log('Detailed Schedule:');
-        result.opening_hours.periods.forEach(period => {
-          log(`  Open: ${period.open.day} at ${period.open.time}`);
-          log(`  Close: ${period.close.day} at ${period.close.time}`);
+        result.data.opening_hours.periods.forEach((period: { open?: { day: number; time: string }; close?: { day: number; time: string } }) => {
+          if (period.open && period.close) {
+            log(`  Open: ${period.open.day} at ${period.open.time}`);
+            log(`  Close: ${period.close.day} at ${period.close.time}`);
+          }
         });
       }
+    }
+    if (result.data?.reviews) {
+      log('\nReviews:');
+      const totalRatings = result.data.user_ratings_total ?? 0;
+      log(`Overall Rating: ${result.data.rating} (${totalRatings} total ratings)`);
+      log('Recent Reviews:');
+      result.data.reviews.slice(0, 3).forEach((review: { rating: number; text: string; time: number; author_name: string }, index: number) => {
+        log(`\nReview ${index + 1}:`);
+        log(`  Rating: ${review.rating}`);
+        log(`  Author: ${review.author_name}`);
+        log(`  Time: ${new Date(Number(review.time) * 1000).toLocaleString()}`);
+        log(`  Text: ${review.text.substring(0, 100)}${review.text.length > 100 ? '...' : ''}`);
+      });
     }
   } catch (err) {
     testResults.placeDetails = {
       success: false,
       error: err instanceof Error ? err.message : String(err)
     };
+    log('❌ Place Details failed: ' + (err instanceof Error ? err.message : String(err)));
+    console.error('Full error:', err);
   }
 
   // Test 7: Elevation

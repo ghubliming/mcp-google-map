@@ -41,18 +41,11 @@ interface GeocodeResult {
 
 export class GoogleMapsTools {
   private client: Client;
-  // Force English language for all API responses
-  private readonly defaultLanguage: Language = Language.en_US;
+  private defaultLanguage: Language;
 
   constructor() {
-    this.client = new Client({
-      config: {
-        language: Language.en_US // Explicitly set language in client config
-      }
-    });
-    if (!process.env.GOOGLE_MAPS_API_KEY) {
-      throw new Error("Google Maps API Key is required");
-    }
+    this.client = new Client({});
+    this.defaultLanguage = Language.en;
   }
 
   async searchNearbyPlaces(params: SearchParams): Promise<PlaceResult[]> {
@@ -78,18 +71,55 @@ export class GoogleMapsTools {
 
   async getPlaceDetails(placeId: string) {
     try {
+      console.log('Making API request for place details:', placeId);
       const response = await this.client.placeDetails({
         params: {
           place_id: placeId,
-          fields: ["name", "rating", "formatted_address", "opening_hours", "reviews", "geometry", "formatted_phone_number", "website", "price_level", "photos"],
+          fields: [
+            "name",
+            "rating",
+            "formatted_address",
+            "opening_hours",
+            "reviews",
+            "geometry",
+            "formatted_phone_number",
+            "website",
+            "price_level",
+            "user_ratings_total"
+          ],
           language: this.defaultLanguage,
           key: process.env.GOOGLE_MAPS_API_KEY || "",
         },
       });
-      return response.data.result;
+
+      console.log('API Response status:', response.data.status);
+      if (response.data.status !== 'OK') {
+        console.error('API Error:', response.data.error_message);
+        return {
+          success: false,
+          error: response.data.error_message || response.data.status
+        };
+      }
+
+      if (!response.data || !response.data.result) {
+        console.error('No result in API response:', response.data);
+        return {
+          success: false,
+          error: "No place details found in response"
+        };
+      }
+
+      console.log('Place details result:', response.data.result);
+      return {
+        success: true,
+        data: response.data.result
+      };
     } catch (error) {
       console.error("Error in getPlaceDetails:", error);
-      throw new Error("Error occurred while getting place details");
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Error occurred while getting place details"
+      };
     }
   }
 
@@ -314,7 +344,7 @@ export class GoogleMapsTools {
         if (timeInfo.time_zone && typeof timeInfo.time_zone === "string") {
           options.timeZone = timeInfo.time_zone;
         }
-        return date.toLocaleString(this.defaultLanguage.toString(), options);
+        return date.toLocaleString(this.defaultLanguage, options);
       };
 
       return {

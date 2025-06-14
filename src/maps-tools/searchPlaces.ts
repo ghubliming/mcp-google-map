@@ -1,4 +1,5 @@
 import { GoogleMapsTools } from "./toolclass.js";
+import { PlaceReviews } from './placeReviews.js';
 
 interface SearchNearbyResponse {
   success: boolean;
@@ -7,17 +8,46 @@ interface SearchNearbyResponse {
   location?: any;
 }
 
-interface PlaceDetailsResponse {
-  success: boolean;
-  error?: string;
-  data?: any;
-}
-
-interface GeocodeResponse {
+export interface PlaceDetailsResponse {
   success: boolean;
   error?: string;
   data?: {
-    location: { lat: number; lng: number };
+    name?: string;
+    address?: string;
+    location?: {
+      lat: number;
+      lng: number;
+    };
+    rating?: number;
+    user_ratings_total?: number;
+    opening_hours?: {
+      open_now?: boolean;
+      periods?: Array<{
+        open?: { day: number; time: string };
+        close?: { day: number; time: string };
+      }>;
+      weekday_text?: string[];
+    };
+    phone?: string;
+    website?: string;
+    price_level?: number;
+    reviews?: Array<{
+      rating: number;
+      text: string;
+      time: number;
+      author_name: string;
+    }>;
+  };
+}
+
+export interface GeocodeResponse {
+  success: boolean;
+  error?: string;
+  data?: {
+    location: {
+      lat: number;
+      lng: number;
+    };
     formatted_address: string;
     place_id: string;
   };
@@ -66,9 +96,11 @@ interface ElevationResponse {
 
 export class PlacesSearcher {
   private mapsTools: GoogleMapsTools;
+  private placeReviews: PlaceReviews;
 
-  constructor() {
-    this.mapsTools = new GoogleMapsTools();
+  constructor(mapsTools: GoogleMapsTools) {
+    this.mapsTools = mapsTools;
+    this.placeReviews = new PlaceReviews(mapsTools);
   }
 
   async searchNearby(params: { center: { value: string; isCoordinates: boolean }; keyword?: string; radius?: number }): Promise<SearchNearbyResponse> {
@@ -109,33 +141,54 @@ export class PlacesSearcher {
 
   async getPlaceDetails(placeId: string): Promise<PlaceDetailsResponse> {
     try {
+      console.log('Getting place details for ID:', placeId);
       const details = await this.mapsTools.getPlaceDetails(placeId);
+      console.log('Place details received:', details);
+      
+      if (!details) {
+        console.error('No place details returned from API');
+        return {
+          success: false,
+          error: "No place details found"
+        };
+      }
+
+      const reviews = await this.placeReviews.getPlaceReviews(placeId);
+      console.log('Reviews received:', reviews);
 
       return {
         success: true,
         data: {
           name: details.name,
           address: details.formatted_address,
-          location: details.geometry?.location,
+          location: details.geometry?.location ? {
+            lat: details.geometry.location.lat,
+            lng: details.geometry.location.lng
+          } : undefined,
           rating: details.rating,
           total_ratings: details.user_ratings_total,
           opening_hours: details.opening_hours ? {
             open_now: details.opening_hours.open_now,
-            periods: details.opening_hours.periods,
+            periods: details.opening_hours.periods?.map(period => ({
+              open: period.open ? {
+                day: period.open.day,
+                time: period.open.time || ''
+              } : undefined,
+              close: period.close ? {
+                day: period.close.day,
+                time: period.close.time || ''
+              } : undefined
+            })),
             weekday_text: details.opening_hours.weekday_text
           } : undefined,
           phone: details.formatted_phone_number,
           website: details.website,
           price_level: details.price_level,
-          reviews: details.reviews?.map((review: { rating: number; text: string; time: number; author_name: string }) => ({
-            rating: review.rating,
-            text: review.text,
-            time: review.time,
-            author_name: review.author_name,
-          })),
+          reviews: reviews.success ? reviews.data?.reviews : undefined,
         },
       };
     } catch (error) {
+      console.error('Error in getPlaceDetails:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : "Error occurred while getting place details",
