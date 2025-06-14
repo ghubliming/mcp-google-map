@@ -494,4 +494,143 @@ export class GoogleMapsTools {
       throw new Error("Error occurred while getting elevation data");
     }
   }
+
+  // Helper method to get Place ID from address
+  async getPlaceIdFromAddress(address: string): Promise<{ success: boolean; placeId?: string; error?: string }> {
+    try {
+      const geocodeResult = await this.geocode(address);
+      return {
+        success: true,
+        placeId: geocodeResult.place_id
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to get Place ID from address"
+      };
+    }
+  }
+
+  // Helper method to get Place ID from coordinates
+  async getPlaceIdFromCoordinates(latitude: number, longitude: number): Promise<{ success: boolean; placeId?: string; error?: string }> {
+    try {
+      const reverseGeocodeResult = await this.reverseGeocode(latitude, longitude);
+      return {
+        success: true,
+        placeId: reverseGeocodeResult.place_id
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to get Place ID from coordinates"
+      };
+    }
+  }
+
+  // Helper method to get Place IDs from nearby search
+  async getPlaceIdsNearby(center: { value: string; isCoordinates: boolean }, keyword?: string, radius?: number): Promise<{ success: boolean; placeIds?: Array<{ placeId: string; name: string; address?: string }>; error?: string }> {
+    try {
+      const location = await this.getLocation(center);
+      const places = await this.searchNearbyPlaces({
+        location: { lat: location.lat, lng: location.lng },
+        keyword,
+        radius
+      });
+      
+      const placeIds = places.map(place => ({
+        placeId: place.place_id,
+        name: place.name,
+        address: place.formatted_address
+      }));
+
+      return {
+        success: true,
+        placeIds
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to get Place IDs from nearby search"
+      };
+    }
+  }
+
+  // Enhanced method to get Place Details V1 with automatic Place ID resolution
+  async getPlaceDetailsV1WithSearch(searchQuery: { address?: string; coordinates?: { lat: number; lng: number }; nearby?: { center: { value: string; isCoordinates: boolean }; keyword?: string; radius?: number } }, fields?: string[]): Promise<ApiResponse<PlaceDetailsResponse & { resolvedPlaceId?: string; searchMethod?: string }>> {
+    try {
+      let placeId: string | undefined;
+      let searchMethod: string;
+
+      // Try to get Place ID based on the search query type
+      if (searchQuery.address) {
+        console.log('Resolving Place ID from address:', searchQuery.address);
+        const result = await this.getPlaceIdFromAddress(searchQuery.address);
+        if (result.success && result.placeId) {
+          placeId = result.placeId;
+          searchMethod = 'geocoding';
+        } else {
+          return {
+            success: false,
+            error: result.error || "Failed to resolve Place ID from address"
+          };
+        }
+      } else if (searchQuery.coordinates) {
+        console.log('Resolving Place ID from coordinates:', searchQuery.coordinates);
+        const result = await this.getPlaceIdFromCoordinates(searchQuery.coordinates.lat, searchQuery.coordinates.lng);
+        if (result.success && result.placeId) {
+          placeId = result.placeId;
+          searchMethod = 'reverse_geocoding';
+        } else {
+          return {
+            success: false,
+            error: result.error || "Failed to resolve Place ID from coordinates"
+          };
+        }
+      } else if (searchQuery.nearby) {
+        console.log('Resolving Place ID from nearby search:', searchQuery.nearby);
+        const result = await this.getPlaceIdsNearby(
+          searchQuery.nearby.center,
+          searchQuery.nearby.keyword,
+          searchQuery.nearby.radius
+        );
+        if (result.success && result.placeIds && result.placeIds.length > 0) {
+          // Return the first result
+          placeId = result.placeIds[0].placeId;
+          searchMethod = 'nearby_search';
+        } else {
+          return {
+            success: false,
+            error: result.error || "No places found in nearby search"
+          };
+        }
+      } else {
+        return {
+          success: false,
+          error: "No valid search criteria provided. Please provide address, coordinates, or nearby search parameters."
+        };
+      }
+
+      // Now get the place details using the resolved Place ID
+      const detailsResult = await this.getPlaceDetailsV1(placeId, fields);
+      
+      if (detailsResult.success && detailsResult.data) {
+        return {
+          success: true,
+          data: {
+            ...detailsResult.data,
+            resolvedPlaceId: placeId,
+            searchMethod: searchMethod
+          }
+        };
+      } else {
+        return detailsResult;
+      }
+    } catch (error) {
+      console.error("Error in getPlaceDetailsV1WithSearch:", error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Error occurred while getting place details with search"
+      };
+    }
+  }
 }

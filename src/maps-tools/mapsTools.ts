@@ -194,3 +194,158 @@ export const GET_REVIEWS_TOOL = {
     required: ["placeId"],
   },
 };
+
+export const GET_REVIEWS_BY_ADDRESS_TOOL = {
+  name: "get_reviews_by_address",
+  description: "Get reviews for a place by searching with an address",
+  inputSchema: {
+    type: "object",
+    properties: {
+      address: {
+        type: "string",
+        description: "Address or landmark name to search for",
+      },
+      maxReviews: {
+        type: "number",
+        description: "Maximum number of individual reviews to return (default: 5, max: 5)",
+        default: 5,
+      },
+      includeReviewSummary: {
+        type: "boolean",
+        description: "Whether to include AI-generated review summary from V1 API (default: true)",
+        default: true,
+      },
+    },
+    required: ["address"],
+  },
+};
+
+export const GET_REVIEWS_BY_COORDINATES_TOOL = {
+  name: "get_reviews_by_coordinates",
+  description: "Get reviews for a place by searching with coordinates",
+  inputSchema: {
+    type: "object",
+    properties: {
+      latitude: {
+        type: "number",
+        description: "Latitude coordinate",
+      },
+      longitude: {
+        type: "number",
+        description: "Longitude coordinate",
+      },
+      maxReviews: {
+        type: "number",
+        description: "Maximum number of individual reviews to return (default: 5, max: 5)",
+        default: 5,
+      },
+      includeReviewSummary: {
+        type: "boolean",
+        description: "Whether to include AI-generated review summary from V1 API (default: true)",
+        default: true,
+      },
+    },
+    required: ["latitude", "longitude"],
+  },
+};
+
+export const GET_REVIEWS_BY_NEARBY_SEARCH_TOOL = {
+  name: "get_reviews_by_nearby_search",
+  description: "Get reviews for a place by searching nearby a location with optional keyword",
+  inputSchema: {
+    type: "object",
+    properties: {
+      center: {
+        type: "object",
+        properties: {
+          value: { type: "string", description: "Address, landmark name, or coordinates (format: lat,lng)" },
+          isCoordinates: { type: "boolean", description: "Whether the value is coordinates", default: false },
+        },
+        required: ["value"],
+        description: "Search center point",
+      },
+      keyword: {
+        type: "string",
+        description: "Search keyword (e.g., restaurant, cafe)",
+      },
+      radius: {
+        type: "number",
+        description: "Search radius (in meters)",
+        default: 1000,
+      },
+      maxReviews: {
+        type: "number",
+        description: "Maximum number of individual reviews to return (default: 5, max: 5)",
+        default: 5,
+      },
+      includeReviewSummary: {
+        type: "boolean",
+        description: "Whether to include AI-generated review summary from V1 API (default: true)",
+        default: true,
+      },
+    },
+    required: ["center"],
+  },
+};
+
+export const GET_PLACE_DETAILS_V1_WITH_SEARCH_TOOL = {
+  name: "get_place_details_v1_with_search",
+  description: "Get place details using V1 API with automatic Place ID resolution from address, coordinates, or nearby search",
+  inputSchema: {
+    type: "object",
+    properties: {
+      searchQuery: {
+        type: "object",
+        properties: {
+          address: {
+            type: "string",
+            description: "Address or landmark name to search for",
+          },
+          coordinates: {
+            type: "object",
+            properties: {
+              lat: { type: "number", description: "Latitude" },
+              lng: { type: "number", description: "Longitude" },
+            },
+            required: ["lat", "lng"],
+            description: "Coordinates to search for",
+          },
+          nearby: {
+            type: "object",
+            properties: {
+              center: {
+                type: "object",
+                properties: {
+                  value: { type: "string", description: "Address, landmark name, or coordinates (format: lat,lng)" },
+                  isCoordinates: { type: "boolean", description: "Whether the value is coordinates", default: false },
+                },
+                required: ["value"],
+                description: "Search center point",
+              },
+              keyword: {
+                type: "string",
+                description: "Search keyword (e.g., restaurant, cafe)",
+              },
+              radius: {
+                type: "number",
+                description: "Search radius (in meters)",
+                default: 1000,
+              },
+            },
+            required: ["center"],
+            description: "Nearby search parameters",
+          },
+        },
+        description: "Search criteria - provide one of: address, coordinates, or nearby",
+      },
+      fields: {
+        type: "array",
+        items: {
+          type: "string",
+        },
+        description: "Fields to include in the response (e.g., displayName, reviewSummary, googleMapsLinks.reviewsUri)",
+      },
+    },
+    required: ["searchQuery"],
+  },
+};

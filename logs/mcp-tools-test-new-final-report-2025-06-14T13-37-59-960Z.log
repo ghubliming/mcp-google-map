@@ -1,0 +1,985 @@
+🚀 Starting MCP Google Maps Tools Test Suite
+===============================================
+Test started at: 2025-06-14T13:37:58.294Z
+API Key configured: Yes
+
+
+Testing Geocoding...
+✅ Geocoding works!
+Location: {"lat":37.4220094,"lng":-122.0847525}
+Formatted address: 1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA
+
+Testing Reverse Geocoding...
+✅ Reverse Geocoding works!
+Formatted address: 1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA
+
+Testing Search Nearby...
+✅ Search Nearby works!
+Found 20 restaurants
+First result: ZAZA
+
+Testing Distance Matrix...
+✅ Distance Matrix works!
+Distances calculated successfully
+
+Testing Directions...
+✅ Directions works!
+Route summary: CT-15 N and I-90 E
+Total distance: 215 mi
+Total duration: 3 hours 38 mins
+
+Testing Place Details (Basic)...
+Got place ID: ChIJLU7jZClu5kcR4PcOOO6p3I0
+Getting place details for ID: ChIJLU7jZClu5kcR4PcOOO6p3I0
+Making API request for place details: ChIJLU7jZClu5kcR4PcOOO6p3I0
+API Response status: OK
+Place details result: {
+  "formatted_address": "Av. Gustave Eiffel, 75007 Paris, France",
+  "geometry": {
+    "location": {
+      "lat": 48.85837009999999,
+      "lng": 2.2944813
+    },
+    "viewport": {
+      "northeast": {
+        "lat": 48.8599253,
+        "lng": 2.297770400000001
+      },
+      "southwest": {
+        "lat": 48.8561421,
+        "lng": 2.2919472
+      }
+    }
+  },
+  "name": "Eiffel Tower",
+  "opening_hours": {
+    "open_now": true,
+    "periods": [
+      {
+        "close": {
+          "day": 0,
+          "time": "2300"
+        },
+        "open": {
+          "day": 0,
+          "time": "0930"
+        }
+      },
+      {
+        "close": {
+          "day": 1,
+          "time": "2300"
+        },
+        "open": {
+          "day": 1,
+          "time": "0930"
+        }
+      },
+      {
+        "close": {
+          "day": 2,
+          "time": "2300"
+        },
+        "open": {
+          "day": 2,
+          "time": "0930"
+        }
+      },
+      {
+        "close": {
+          "day": 3,
+          "time": "2300"
+        },
+        "open": {
+          "day": 3,
+          "time": "0930"
+        }
+      },
+      {
+        "close": {
+          "day": 4,
+          "time": "2300"
+        },
+        "open": {
+          "day": 4,
+          "time": "0930"
+        }
+      },
+      {
+        "close": {
+          "day": 5,
+          "time": "2300"
+        },
+        "open": {
+          "day": 5,
+          "time": "0930"
+        }
+      },
+      {
+        "close": {
+          "day": 6,
+          "time": "2300"
+        },
+        "open": {
+          "day": 6,
+          "time": "0930"
+        }
+      }
+    ],
+    "weekday_text": [
+      "Monday: 9:30 AM – 11:00 PM",
+      "Tuesday: 9:30 AM – 11:00 PM",
+      "Wednesday: 9:30 AM – 11:00 PM",
+      "Thursday: 9:30 AM – 11:00 PM",
+      "Friday: 9:30 AM – 11:00 PM",
+      "Saturday: 9:30 AM – 11:00 PM",
+      "Sunday: 9:30 AM – 11:00 PM"
+    ]
+  },
+  "rating": 4.7,
+  "user_ratings_total": 443551,
+  "website": "https://www.toureiffel.paris/fr"
+}
+Place details received: {
+  "success": true,
+  "data": {
+    "formatted_address": "Av. Gustave Eiffel, 75007 Paris, France",
+    "geometry": {
+      "location": {
+        "lat": 48.85837009999999,
+        "lng": 2.2944813
+      },
+      "viewport": {
+        "northeast": {
+          "lat": 48.8599253,
+          "lng": 2.297770400000001
+        },
+        "southwest": {
+          "lat": 48.8561421,
+          "lng": 2.2919472
+        }
+      }
+    },
+    "name": "Eiffel Tower",
+    "opening_hours": {
+      "open_now": true,
+      "periods": [
+        {
+          "close": {
+            "day": 0,
+            "time": "2300"
+          },
+          "open": {
+            "day": 0,
+            "time": "0930"
+          }
+        },
+        {
+          "close": {
+            "day": 1,
+            "time": "2300"
+          },
+          "open": {
+            "day": 1,
+            "time": "0930"
+          }
+        },
+        {
+          "close": {
+            "day": 2,
+            "time": "2300"
+          },
+          "open": {
+            "day": 2,
+            "time": "0930"
+          }
+        },
+        {
+          "close": {
+            "day": 3,
+            "time": "2300"
+          },
+          "open": {
+            "day": 3,
+            "time": "0930"
+          }
+        },
+        {
+          "close": {
+            "day": 4,
+            "time": "2300"
+          },
+          "open": {
+            "day": 4,
+            "time": "0930"
+          }
+        },
+        {
+          "close": {
+            "day": 5,
+            "time": "2300"
+          },
+          "open": {
+            "day": 5,
+            "time": "0930"
+          }
+        },
+        {
+          "close": {
+            "day": 6,
+            "time": "2300"
+          },
+          "open": {
+            "day": 6,
+            "time": "0930"
+          }
+        }
+      ],
+      "weekday_text": [
+        "Monday: 9:30 AM – 11:00 PM",
+        "Tuesday: 9:30 AM – 11:00 PM",
+        "Wednesday: 9:30 AM – 11:00 PM",
+        "Thursday: 9:30 AM – 11:00 PM",
+        "Friday: 9:30 AM – 11:00 PM",
+        "Saturday: 9:30 AM – 11:00 PM",
+        "Sunday: 9:30 AM – 11:00 PM"
+      ]
+    },
+    "rating": 4.7,
+    "user_ratings_total": 443551,
+    "website": "https://www.toureiffel.paris/fr"
+  }
+}
+✅ Place Details works!
+Place name: Eiffel Tower
+Rating: 4.7
+Address: Av. Gustave Eiffel, 75007 Paris, France
+Opening Hours Available: Yes
+Weekly Schedule:
+  Monday: 9:30 AM – 11:00 PM
+  Tuesday: 9:30 AM – 11:00 PM
+  Wednesday: 9:30 AM – 11:00 PM
+  Thursday: 9:30 AM – 11:00 PM
+  Friday: 9:30 AM – 11:00 PM
+  Saturday: 9:30 AM – 11:00 PM
+  Sunday: 9:30 AM – 11:00 PM
+
+Testing Reviews (New Approach)...
+Got place ID for reviews: ChIJxQ5iVTRFwokRgCZVTKe-oo4
+Getting reviews for place ID: ChIJxQ5iVTRFwokRgCZVTKe-oo4, maxReviews: 3, includeReviewSummary: true
+Making API request for place details: ChIJxQ5iVTRFwokRgCZVTKe-oo4
+Making API request for review summary (v1): ChIJxQ5iVTRFwokRgCZVTKe-oo4
+API Response status: OK
+Place details result: {
+  "formatted_address": "7002 Fort Hamilton Pkwy, Brooklyn, NY 11228, USA",
+  "formatted_phone_number": "(718) 333-5448",
+  "geometry": {
+    "location": {
+      "lat": 40.6282757,
+      "lng": -74.0132229
+    },
+    "viewport": {
+      "northeast": {
+        "lat": 40.62953838029149,
+        "lng": -74.0117740697085
+      },
+      "southwest": {
+        "lat": 40.62684041970849,
+        "lng": -74.0144720302915
+      }
+    }
+  },
+  "name": "Noodle Dumpling House",
+  "rating": 4,
+  "reviews": [
+    {
+      "author_name": "Amy Ng",
+      "author_url": "https://www.google.com/maps/contrib/105610173382842325500/reviews",
+      "language": "en",
+      "original_language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocJtHlkBF1313jBhdMnXxBCl5mE1h7TgIcuuaPtjyEku5PlRybg=s128-c0x00000000-cc-rp-mo-ba6",
+      "rating": 3,
+      "relative_time_description": "6 years ago",
+      "text": "They're opened for business!",
+      "time": 1545825107,
+      "translated": false
+    },
+    {
+      "author_name": "Victoria Plummer",
+      "author_url": "https://www.google.com/maps/contrib/102818055514969085255/reviews",
+      "language": "en",
+      "original_language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjXQYt_JIoDfPAR-vSBRE4smCcVyXOfjBZipvlqO8wv6dpv_DxE=s128-c0x00000000-cc-rp-mo-ba2",
+      "rating": 5,
+      "relative_time_description": "4 years ago",
+      "text": "Excellent dumplings and buns.",
+      "time": 1599791841,
+      "translated": false
+    }
+  ],
+  "user_ratings_total": 2
+}
+Review summary result (v1): {
+  "googleMapsLinks": {
+    "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x89c2453455620ec5:0x8ea2bea74c552680!9m1!1b1"
+  }
+}
+✅ Reviews work!
+Overall Rating: 4
+Total Ratings: 2
+Reviews Count: 2
+Review Summary Available: No
+
+Detailed Reviews:
+
+Review 1:
+  Rating: 3
+  Author: Amy Ng
+  Time: 1545825107
+  Text: They're opened for business!
+
+Review 2:
+  Rating: 5
+  Author: Victoria Plummer
+  Time: 1599791841
+  Text: Excellent dumplings and buns.
+
+Testing Elevation...
+✅ Elevation works!
+Elevation results:
+  Location 1: 13.26 meters
+  Location 2: 8729.43 meters
+  Location 3: 144.89 meters
+
+Testing Place ID Resolution from Address...
+✅ Place ID from Address works!
+Place ID: ChIJLU7jZClu5kcR4PcOOO6p3I0
+
+Testing Place ID Resolution from Coordinates...
+✅ Place ID from Coordinates works!
+Place ID: ChIJtxtr8-Fv5kcRE0o6DfBH78o
+
+Testing Place ID Resolution from Nearby Search...
+✅ Place IDs from Nearby Search works!
+Found 20 places
+  1. Junior's Restaurant & Bakery (ChIJv8YTWFRYwokRkTUSNDg04Y4)
+  2. Connolly's (ChIJAS6GeVVYwokRPfg8xt4nH-I)
+  3. Barking Dog Hell’s Kitchen (ChIJbdoPbEZZwokREBWq_EVLfOI)
+
+Testing Place Details V1 with Address Search...
+Resolving Place ID from address: Statue of Liberty, New York
+Making API request for place details (v1): ChIJPTacEpBQwokRKwIlDXelxkA
+Place details result (v1): {
+  "displayName": {
+    "text": "Statue of Liberty",
+    "languageCode": "en"
+  },
+  "googleMapsLinks": {
+    "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x89c25090129c363d:0x40c6a5770d25022b!9m1!1b1"
+  },
+  "reviewSummary": {
+    "text": {
+      "text": "Visitors say this historical landmark offers stunning city views and a memorable experience, and they recommend booking tickets in advance to avoid long lines. They also highlight the educational value of the on-site museum and the opportunity to learn about the history and significance of the Statue of Liberty.",
+      "languageCode": "en-US"
+    },
+    "flagContentUri": "https://www.google.com/local/review/rap/report?postId=5%401:CAIQACodChtyc19oOi1kWkxSc25SblB5ZnZGZGZzeUlhX0E%7CCAIQACoqChtyc19oOi1kWkxSc25SblB5ZnZGZGZzeUlhX0ESCwiBl_3BBhCA249g&d=17924085&t=8",
+    "disclosureText": {
+      "text": "Summarized with Gemini",
+      "languageCode": "en-US"
+    },
+    "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x89c25090129c363d:0x40c6a5770d25022b!9m1!1b1"
+  }
+}
+✅ Place Details V1 with Address Search works!
+Display Name: Statue of Liberty
+Resolved Place ID: ChIJPTacEpBQwokRKwIlDXelxkA
+Search Method: geocoding
+Review Summary Available: Yes
+
+Testing Place Details V1 with Coordinates Search...
+Resolving Place ID from coordinates: {
+  "lat": 40.6892,
+  "lng": -74.0445
+}
+Making API request for place details (v1): ChIJtVnmb8NRwokR_3uWRO74MVE
+Place details result (v1): {
+  "displayName": {
+    "text": "1 Communipaw Ave"
+  },
+  "googleMapsLinks": {}
+}
+✅ Place Details V1 with Coordinates Search works!
+Display Name: 1 Communipaw Ave
+Resolved Place ID: ChIJtVnmb8NRwokR_3uWRO74MVE
+Search Method: reverse_geocoding
+
+Testing Reviews by Address (with Place ID resolution)...
+Getting reviews for address: Central Park, New York
+Getting reviews for address: Central Park, New York
+Resolved Place ID: ChIJ4zGFAZpYwokRGUGph3Mf37k for address: Central Park, New York
+Making API request for place details: ChIJ4zGFAZpYwokRGUGph3Mf37k
+Making API request for review summary (v1): ChIJ4zGFAZpYwokRGUGph3Mf37k
+API Response status: OK
+Place details result: {
+  "formatted_address": "New York, NY, USA",
+  "formatted_phone_number": "(212) 310-6600",
+  "geometry": {
+    "location": {
+      "lat": 40.7825547,
+      "lng": -73.9655834
+    },
+    "viewport": {
+      "northeast": {
+        "lat": 40.8216196,
+        "lng": -73.93236079999998
+      },
+      "southwest": {
+        "lat": 40.74508920000002,
+        "lng": -74.00182399999998
+      }
+    }
+  },
+  "name": "Central Park",
+  "opening_hours": {
+    "open_now": true,
+    "periods": [
+      {
+        "close": {
+          "day": 1,
+          "time": "0100"
+        },
+        "open": {
+          "day": 0,
+          "time": "0600"
+        }
+      },
+      {
+        "close": {
+          "day": 2,
+          "time": "0100"
+        },
+        "open": {
+          "day": 1,
+          "time": "0600"
+        }
+      },
+      {
+        "close": {
+          "day": 3,
+          "time": "0100"
+        },
+        "open": {
+          "day": 2,
+          "time": "0600"
+        }
+      },
+      {
+        "close": {
+          "day": 4,
+          "time": "0100"
+        },
+        "open": {
+          "day": 3,
+          "time": "0600"
+        }
+      },
+      {
+        "close": {
+          "day": 5,
+          "time": "0100"
+        },
+        "open": {
+          "day": 4,
+          "time": "0600"
+        }
+      },
+      {
+        "close": {
+          "day": 6,
+          "time": "0100"
+        },
+        "open": {
+          "day": 5,
+          "time": "0600"
+        }
+      },
+      {
+        "close": {
+          "day": 0,
+          "time": "0100"
+        },
+        "open": {
+          "day": 6,
+          "time": "0600"
+        }
+      }
+    ],
+    "weekday_text": [
+      "Monday: 6:00 AM – 1:00 AM",
+      "Tuesday: 6:00 AM – 1:00 AM",
+      "Wednesday: 6:00 AM – 1:00 AM",
+      "Thursday: 6:00 AM – 1:00 AM",
+      "Friday: 6:00 AM – 1:00 AM",
+      "Saturday: 6:00 AM – 1:00 AM",
+      "Sunday: 6:00 AM – 1:00 AM"
+    ]
+  },
+  "rating": 4.8,
+  "reviews": [
+    {
+      "author_name": "Mariah McCoy",
+      "author_url": "https://www.google.com/maps/contrib/111913903261554123599/reviews",
+      "language": "en",
+      "original_language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjVn0-DLfJh-LBFPcAjD5Tvlrr1AWb9opnh6Wskf5UiZFW0fyHsGiA=s128-c0x00000000-cc-rp-mo",
+      "rating": 5,
+      "relative_time_description": "in the last week",
+      "text": "Rating: ⭐️⭐️⭐️⭐️⭐️\n\nCentral Park is truly a breath of fresh air in the middle of the busy city! The park itself is absolutely beautiful — so much greenery, peaceful walking paths, bridges, lakes, and hidden spots that make it feel like a little world of its own. It’s perfect for a relaxing walk, family outing, or just some quiet time in nature.\n\nOne of the highlights of our visit was the horse carriage ride. It felt like something out of a movie! The driver was kind, knowledgeable, and shared fun facts about the park as we rode along. The horse was well-kept and seemed calm and cared for, which was important to me. It was a slow, relaxing pace, and we got to take in the sights without having to walk the whole time.\n\nIt was romantic, peaceful, and such a unique way to experience the park. Definitely worth it if you’re visiting for the first time or want to make your trip extra special.\n\nTip: Bring cash for tips, and consider going around sunset — it’s magical.",
+      "time": 1749432292,
+      "translated": false
+    },
+    {
+      "author_name": "Irina Bykova (The Crispy Critic)",
+      "author_url": "https://www.google.com/maps/contrib/117218234943409065168/reviews",
+      "language": "en",
+      "original_language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjW6LmjuVMBAZ7RNBrZXhkBJOEk-2X8ICnP9sIw6knu0cN6uD5En=s128-c0x00000000-cc-rp-mo-ba5",
+      "rating": 5,
+      "relative_time_description": "2 weeks ago",
+      "text": "Tucked into the wild rhythm of Manhattan, Central Park is where the city breathes.\n\nWhether you’re strolling through the tree-lined paths or catching a saxophonist playing beneath the Bethesda Terrace, Central Park has a way of making you feel like you’ve stepped into a movie scene. (Literally, because you probably have.)\n\nJoggers. Dreamers. Picnickers. Artists. Tourists. Locals. It truly has something for everyone, from quiet corners to bustling playgrounds.\n\nClean and well-kept for such a massive public space.\n\nYou can visit a dozen times and still discover new nooks.\n\nCentral Park is the soul of New York, a rare place where you can feel completely still in the middle of chaos. Whether you’re there for a power walk, a slow picnic, or a dose of inspiration, it always delivers.",
+      "time": 1748576858,
+      "translated": false
+    },
+    {
+      "author_name": "Nadiia Medvedchuk",
+      "author_url": "https://www.google.com/maps/contrib/116584290730444895767/reviews",
+      "language": "en",
+      "original_language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjUnghcaZX2RDuwa2TRVYh-Hrrt5r-byXG6kq5E3Kj0nANhtBz4=s128-c0x00000000-cc-rp-mo-ba4",
+      "rating": 5,
+      "relative_time_description": "2 weeks ago",
+      "text": "Central Park is my personal sanctuary in the middle of the city. I’ve been living nearby for over a year now, and I still haven’t walked through every corner — that’s how vast, beautiful, and full of surprises it is.\n\nFrom early morning runs to slow evening walks, it always feels safe and peaceful. There’s park security and police presence, which makes even solo walks in the evening feel comfortable. I love having picnics with friends on the lawns — some open from 9 AM, others from 11 — and just soaking in the beauty of it all.\n\nFeeding the squirrels is my little ritual — they’re so fluffy and adorable! It’s honestly the perfect place to breathe, slow down, and feel connected — even in the heart of New York City.",
+      "time": 1748401415,
+      "translated": false
+    }
+  ],
+  "user_ratings_total": 284491,
+  "website": "https://www.centralparknyc.org/"
+}
+Review summary result (v1): {
+  "googleMapsLinks": {
+    "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x89c2589a018531e3:0xb9df1f7387a94119!9m1!1b1"
+  }
+}
+✅ Reviews by Address works!
+Overall Rating: 4.8
+Total Ratings: 284491
+Reviews Count: 3
+Review Summary Available: No
+
+Detailed Reviews:
+
+Review 1:
+  Rating: 5
+  Author: Mariah McCoy
+  Time: 1749432292
+  Text: Rating: ⭐️⭐️⭐️⭐️⭐️
+
+Central Park is truly a breath of fresh air in the middle of the busy city! The park itself is absolutely beautiful — so much greenery, peaceful walking paths, bridges, lakes, and hidden spots that make it feel like a little world of its own. It’s perfect for a relaxing walk, family outing, or just some quiet time in nature.
+
+One of the highlights of our visit was the horse carriage ride. It felt like something out of a movie! The driver was kind, knowledgeable, and shared fun facts about the park as we rode along. The horse was well-kept and seemed calm and cared for, which was important to me. It was a slow, relaxing pace, and we got to take in the sights without having to walk the whole time.
+
+It was romantic, peaceful, and such a unique way to experience the park. Definitely worth it if you’re visiting for the first time or want to make your trip extra special.
+
+Tip: Bring cash for tips, and consider going around sunset — it’s magical.
+
+Review 2:
+  Rating: 5
+  Author: Irina Bykova (The Crispy Critic)
+  Time: 1748576858
+  Text: Tucked into the wild rhythm of Manhattan, Central Park is where the city breathes.
+
+Whether you’re strolling through the tree-lined paths or catching a saxophonist playing beneath the Bethesda Terrace, Central Park has a way of making you feel like you’ve stepped into a movie scene. (Literally, because you probably have.)
+
+Joggers. Dreamers. Picnickers. Artists. Tourists. Locals. It truly has something for everyone, from quiet corners to bustling playgrounds.
+
+Clean and well-kept for such a massive public space.
+
+You can visit a dozen times and still discover new nooks.
+
+Central Park is the soul of New York, a rare place where you can feel completely still in the middle of chaos. Whether you’re there for a power walk, a slow picnic, or a dose of inspiration, it always delivers.
+
+Review 3:
+  Rating: 5
+  Author: Nadiia Medvedchuk
+  Time: 1748401415
+  Text: Central Park is my personal sanctuary in the middle of the city. I’ve been living nearby for over a year now, and I still haven’t walked through every corner — that’s how vast, beautiful, and full of surprises it is.
+
+From early morning runs to slow evening walks, it always feels safe and peaceful. There’s park security and police presence, which makes even solo walks in the evening feel comfortable. I love having picnics with friends on the lawns — some open from 9 AM, others from 11 — and just soaking in the beauty of it all.
+
+Feeding the squirrels is my little ritual — they’re so fluffy and adorable! It’s honestly the perfect place to breathe, slow down, and feel connected — even in the heart of New York City.
+
+Testing Reviews by Coordinates (with Place ID resolution)...
+Getting reviews for coordinates: 40.7829, -73.9654
+Getting reviews for coordinates: 40.7829, -73.9654
+Resolved Place ID: ChIJ9QtmiZlYwokREvzwdEXBjCc for coordinates: 40.7829, -73.9654
+Making API request for place details: ChIJ9QtmiZlYwokREvzwdEXBjCc
+Making API request for review summary (v1): ChIJ9QtmiZlYwokREvzwdEXBjCc
+API Response status: OK
+Place details result: {
+  "formatted_address": "50 85th St Transverse, New York, NY 10024, USA",
+  "geometry": {
+    "location": {
+      "lat": 40.7824871,
+      "lng": -73.9654303
+    },
+    "viewport": {
+      "northeast": {
+        "lat": 40.78435303029149,
+        "lng": -73.9640172197085
+      },
+      "southwest": {
+        "lat": 40.7816550697085,
+        "lng": -73.9667151802915
+      }
+    }
+  },
+  "name": "50 85th St Transverse"
+}
+Review summary result (v1): {
+  "googleMapsLinks": {}
+}
+✅ Reviews by Coordinates works!
+Overall Rating: 0
+Total Ratings: 0
+Reviews Count: 0
+
+Testing Reviews by Nearby Search (with Place ID resolution)...
+Getting reviews for nearby search: {
+  "center": {
+    "value": "Bryant Park, New York",
+    "isCoordinates": false
+  },
+  "keyword": "restaurant",
+  "radius": 500
+}
+Getting reviews for nearby search: {
+  "center": {
+    "value": "Bryant Park, New York",
+    "isCoordinates": false
+  },
+  "keyword": "restaurant",
+  "radius": 500
+}
+Using first place found: Junior's Restaurant & Bakery (ChIJv8YTWFRYwokRkTUSNDg04Y4)
+Making API request for place details: ChIJv8YTWFRYwokRkTUSNDg04Y4
+Making API request for review summary (v1): ChIJv8YTWFRYwokRkTUSNDg04Y4
+API Response status: OK
+Place details result: {
+  "formatted_address": "1515 Broadway, W 45th St, New York, NY 10036, USA",
+  "formatted_phone_number": "(212) 302-2000",
+  "geometry": {
+    "location": {
+      "lat": 40.7583331,
+      "lng": -73.98663669999999
+    },
+    "viewport": {
+      "northeast": {
+        "lat": 40.75940963029149,
+        "lng": -73.9853295697085
+      },
+      "southwest": {
+        "lat": 40.75671166970849,
+        "lng": -73.9880275302915
+      }
+    }
+  },
+  "name": "Junior's Restaurant & Bakery",
+  "opening_hours": {
+    "open_now": true,
+    "periods": [
+      {
+        "close": {
+          "day": 1,
+          "time": "0000"
+        },
+        "open": {
+          "day": 0,
+          "time": "0700"
+        }
+      },
+      {
+        "close": {
+          "day": 2,
+          "time": "0000"
+        },
+        "open": {
+          "day": 1,
+          "time": "0700"
+        }
+      },
+      {
+        "close": {
+          "day": 3,
+          "time": "0000"
+        },
+        "open": {
+          "day": 2,
+          "time": "0700"
+        }
+      },
+      {
+        "close": {
+          "day": 4,
+          "time": "0000"
+        },
+        "open": {
+          "day": 3,
+          "time": "0700"
+        }
+      },
+      {
+        "close": {
+          "day": 5,
+          "time": "0000"
+        },
+        "open": {
+          "day": 4,
+          "time": "0700"
+        }
+      },
+      {
+        "close": {
+          "day": 6,
+          "time": "0100"
+        },
+        "open": {
+          "day": 5,
+          "time": "0700"
+        }
+      },
+      {
+        "close": {
+          "day": 0,
+          "time": "0100"
+        },
+        "open": {
+          "day": 6,
+          "time": "0700"
+        }
+      }
+    ],
+    "weekday_text": [
+      "Monday: 7:00 AM – 12:00 AM",
+      "Tuesday: 7:00 AM – 12:00 AM",
+      "Wednesday: 7:00 AM – 12:00 AM",
+      "Thursday: 7:00 AM – 12:00 AM",
+      "Friday: 7:00 AM – 1:00 AM",
+      "Saturday: 7:00 AM – 1:00 AM",
+      "Sunday: 7:00 AM – 12:00 AM"
+    ]
+  },
+  "price_level": 2,
+  "rating": 4.4,
+  "reviews": [
+    {
+      "author_name": "Helen",
+      "author_url": "https://www.google.com/maps/contrib/100317602854739616081/reviews",
+      "language": "en",
+      "original_language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocJXB1oqCjmw16r_oKaaD2lcS8Ub2laTsHFwm07jZo_69dp2sw=s128-c0x00000000-cc-rp-mo-ba3",
+      "rating": 3,
+      "relative_time_description": "2 weeks ago",
+      "text": "During my recent visit to Junior’s Restaurant on 45th Street in New York’s Times Square, I got a taste of the iconic American diner vibe that draws in crowds, especially tourists. The atmosphere is quintessentially American—retro decor with red vinyl booths, neon signs, and a bustling energy that screams NYC. It’s no surprise the place was packed with tourists, all eager to soak in the classic diner experience just steps away from Broadway’s bright lights.\nI sat at the bar, which was a great choice as there was no wait, unlike the tables that seemed to fill up quickly. The staff was a highlight—friendly, welcoming, and efficient, making me feel right at home despite the busy environment. Their warmth added a lot to the overall experience, especially for a first-time visitor looking for that authentic diner feel.\nFor breakfast, I tried the omelette and eggs Benedict. The omelette was solid—fluffy with a decent amount of filling, though the flavor was just okay, lacking that extra punch to make it memorable. The eggs Benedict were similarly decent, with properly poached eggs and a tangy hollandaise, but again, nothing stood out as exceptional. The food was satisfying for a quick diner meal, but it didn’t leave a lasting impression taste-wise.\nAs a tourist, I’d recommend Junior’s for the experience alone. The diner vibe—complete with bottomless coffee and a lively, no-frills atmosphere—is exactly what you’d expect from a classic American spot in the heart of NYC. It’s not about gourmet cuisine but about embracing the cultural staple of a New York diner. If you’re visiting and want a taste of that USA diner charm without a long wait, Junior’s is worth a stop. Just don’t expect the food to blow you away.",
+      "time": 1748231055,
+      "translated": false
+    },
+    {
+      "author_name": "Joa J",
+      "author_url": "https://www.google.com/maps/contrib/100536789161745191114/reviews",
+      "language": "en",
+      "original_language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjXo2gGpaOmDeHLdMaSGSarSuiLNaXuZl2SkYTzUR5sAEwvSUdke7w=s128-c0x00000000-cc-rp-mo-ba5",
+      "rating": 5,
+      "relative_time_description": "a month ago",
+      "text": "Our server was fantastic. It was a busy day but we immediately got a table. The burger and the calamari were great! The cheesecakes were delicious! As a suggestion, please put together a cheesecake samplerrrr! I would love to try little bites of everything! Thank you!",
+      "time": 1745346270,
+      "translated": false
+    }
+  ],
+  "user_ratings_total": 14254,
+  "website": "https://www.juniorscheesecake.com/blog/restaurants/times-square/"
+}
+Review summary result (v1): {
+  "googleMapsLinks": {
+    "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x89c258545813c6bf:0x8ee1343834123591!9m1!1b1"
+  },
+  "reviewSummary": {
+    "text": {
+      "text": "Diners say this American restaurant serves up delicious pastrami sandwiches, French onion soup, and a wide variety of cheesecakes, including strawberry, red velvet, and plain New York style. They also highlight the friendly and efficient service, generous portions, and convenient location near Times Square.\n\nSome reviews mention the noise level can be loud.",
+      "languageCode": "en-US"
+    },
+    "flagContentUri": "https://www.google.com/local/review/rap/report?postId=5%401:CAIQACodChtyc19oOlNjU19YTDZkYldfTFJFbFB1OGRrTGc%7CCAIQACoqChtyc19oOlNjU19YTDZkYldfTFJFbFB1OGRrTGcSCwiBl_3BBhCA249g&d=17924085&t=8",
+    "disclosureText": {
+      "text": "Summarized with Gemini",
+      "languageCode": "en-US"
+    },
+    "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x89c258545813c6bf:0x8ee1343834123591!9m1!1b1"
+  }
+}
+✅ Reviews by Nearby Search works!
+Overall Rating: 4.4
+Total Ratings: 14254
+Reviews Count: 2
+
+Review Summary:
+{
+  "text": "Diners say this American restaurant serves up delicious pastrami sandwiches, French onion soup, and a wide variety of cheesecakes, including strawberry, red velvet, and plain New York style. They also highlight the friendly and efficient service, generous portions, and convenient location near Times Square.\n\nSome reviews mention the noise level can be loud.",
+  "flag_content_uri": "https://www.google.com/local/review/rap/report?postId=5%401:CAIQACodChtyc19oOlNjU19YTDZkYldfTFJFbFB1OGRrTGc%7CCAIQACoqChtyc19oOlNjU19YTDZkYldfTFJFbFB1OGRrTGcSCwiBl_3BBhCA249g&d=17924085&t=8",
+  "disclosure_text": "Summarized with Gemini",
+  "reviews_uri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x89c258545813c6bf:0x8ee1343834123591!9m1!1b1"
+}
+
+Detailed Reviews:
+
+Review 1:
+  Rating: 3
+  Author: Helen
+  Time: 1748231055
+  Text: During my recent visit to Junior’s Restaurant on 45th Street in New York’s Times Square, I got a taste of the iconic American diner vibe that draws in crowds, especially tourists. The atmosphere is quintessentially American—retro decor with red vinyl booths, neon signs, and a bustling energy that screams NYC. It’s no surprise the place was packed with tourists, all eager to soak in the classic diner experience just steps away from Broadway’s bright lights.
+I sat at the bar, which was a great choice as there was no wait, unlike the tables that seemed to fill up quickly. The staff was a highlight—friendly, welcoming, and efficient, making me feel right at home despite the busy environment. Their warmth added a lot to the overall experience, especially for a first-time visitor looking for that authentic diner feel.
+For breakfast, I tried the omelette and eggs Benedict. The omelette was solid—fluffy with a decent amount of filling, though the flavor was just okay, lacking that extra punch to make it memorable. The eggs Benedict were similarly decent, with properly poached eggs and a tangy hollandaise, but again, nothing stood out as exceptional. The food was satisfying for a quick diner meal, but it didn’t leave a lasting impression taste-wise.
+As a tourist, I’d recommend Junior’s for the experience alone. The diner vibe—complete with bottomless coffee and a lively, no-frills atmosphere—is exactly what you’d expect from a classic American spot in the heart of NYC. It’s not about gourmet cuisine but about embracing the cultural staple of a New York diner. If you’re visiting and want a taste of that USA diner charm without a long wait, Junior’s is worth a stop. Just don’t expect the food to blow you away.
+
+Review 2:
+  Rating: 5
+  Author: Joa J
+  Time: 1745346270
+  Text: Our server was fantastic. It was a busy day but we immediately got a table. The burger and the calamari were great! The cheesecakes were delicious! As a suggestion, please put together a cheesecake samplerrrr! I would love to try little bites of everything! Thank you!
+
+Available Places:
+
+Place 1:
+  Name: Junior's Restaurant & Bakery
+  Place ID: ChIJv8YTWFRYwokRkTUSNDg04Y4
+
+Place 2:
+  Name: Serafina Madison 38th (Midtown)
+  Place ID: ChIJ8TP4iZlZwokRITFJkalDwsc
+
+Place 3:
+  Name: Connolly's
+  Place ID: ChIJAS6GeVVYwokRPfg8xt4nH-I
+
+Place 4:
+  Name: Benjamin Steakhouse
+  Place ID: ChIJ3TH9CwFZwokRIvNO1SP0WLg
+
+Place 5:
+  Name: Le Pain Quotidien
+  Place ID: ChIJbQmR8QJZwokRMY4AoaKPPhg
+
+Place 6:
+  Name: Mitr Thai Restaurant
+  Place ID: ChIJ3aKC18JZwokRV_edM73h9UI
+
+Place 7:
+  Name: Margaritaville Restaurant - Times Square
+  Place ID: ChIJU7YBOxFZwokRyBQIX2g7TtQ
+
+Place 8:
+  Name: Isla & Co. - Midtown
+  Place ID: ChIJIYq6WtZZwokRdqduboSbRU8
+
+Place 9:
+  Name: Black Tap Craft Burgers & Beer - 35th St
+  Place ID: ChIJX7vhtP5ZwokRPkmCmUg4ZIU
+
+Place 10:
+  Name: Carmine's - Time Square
+  Place ID: ChIJR9So-lRYwokRX1xEjA0rChA
+
+Place 11:
+  Name: Havana Central Times Square
+  Place ID: ChIJy0KKmVVYwokRyab_FcJzFA0
+
+Place 12:
+  Name: The Red Flame
+  Place ID: ChIJs5kQ9P9YwokR0-5r5j2SiR4
+
+Place 13:
+  Name: Ramerino - Italian Prime Restaurant
+  Place ID: ChIJOUC8wABZwokRwDcZR-3lHa4
+
+Place 14:
+  Name: Zen Ramen & Sushi
+  Place ID: ChIJwWtKCKxZwokRVZw2bMXkmyU
+
+Place 15:
+  Name: Shake Shack Grand Central Terminal
+  Place ID: ChIJ39FujwFZwokRjDRDcb_Dzbw
+
+Place 16:
+  Name: CHILI
+  Place ID: ChIJJS3mqONZwokR9KlP3H_7MNg
+
+Place 17:
+  Name: The Best Sichuan
+  Place ID: ChIJSzY_qqtZwokRiLyLL2_upv0
+
+Place 18:
+  Name: Connolly's
+  Place ID: ChIJW5xpb_1YwokR_ioNQo7Ot4c
+
+Place 19:
+  Name: Margon
+  Place ID: ChIJ28_VhFVYwokRigKkUoPI6Ec
+
+Place 20:
+  Name: Handcraft Burgers and Brew
+  Place ID: ChIJWSIJcOdZwokRRBEZeW6hFTA
+
+=== MCP Tools Test Summary ===
+Total Tests: 16
+Successful: 16
+Failed: 0
+
+✅ geocoding: Works
+✅ reverseGeocoding: Works
+✅ searchNearby: Works
+✅ distanceMatrix: Works
+✅ directions: Works
+✅ placeDetails: Works
+✅ reviews: Works
+✅ elevation: Works
+✅ placeIdFromAddress: Works
+✅ placeIdFromCoordinates: Works
+✅ placeIdsFromNearby: Works
+✅ placeDetailsV1WithAddress: Works
+✅ placeDetailsV1WithCoordinates: Works
+✅ reviewsByAddress: Works
+✅ reviewsByCoordinates: Works
+✅ reviewsByNearbySearch: Works
+
+=== Review Summary ===
+
+reviews:
+  Status: ✅ Success
+
+reviewsByAddress:
+  Status: ✅ Success
+
+reviewsByCoordinates:
+  Status: ✅ Success
+
+reviewsByNearbySearch:
+  Status: ✅ Success
+  Review Summary:
+{
+  "text": "Diners say this American restaurant serves up delicious pastrami sandwiches, French onion soup, and a wide variety of cheesecakes, including strawberry, red velvet, and plain New York style. They also highlight the friendly and efficient service, generous portions, and convenient location near Times Square.\n\nSome reviews mention the noise level can be loud.",
+  "flag_content_uri": "https://www.google.com/local/review/rap/report?postId=5%401:CAIQACodChtyc19oOlNjU19YTDZkYldfTFJFbFB1OGRrTGc%7CCAIQACoqChtyc19oOlNjU19YTDZkYldfTFJFbFB1OGRrTGcSCwiBl_3BBhCA249g&d=17924085&t=8",
+  "disclosure_text": "Summarized with Gemini",
+  "reviews_uri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x89c258545813c6bf:0x8ee1343834123591!9m1!1b1"
+}
+
+=== Overall Result: ✅ ALL TESTS PASSED ===

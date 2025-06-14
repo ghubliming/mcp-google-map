@@ -293,4 +293,60 @@ export class PlacesSearcher {
       };
     }
   }
+
+  // Method to get reviews using address to find Place ID
+  async getReviewsByAddress(address: string, maxReviews: number = 5, includeReviewSummary: boolean = true): Promise<any> {
+    try {
+      console.log(`Getting reviews for address: ${address}`);
+      return await this.placeReviews.getReviewsByAddress(address, maxReviews, includeReviewSummary);
+    } catch (error) {
+      console.error('Error in getReviewsByAddress:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Error occurred while getting reviews by address",
+      };
+    }
+  }
+
+  // Method to get reviews using coordinates to find Place ID
+  async getReviewsByCoordinates(latitude: number, longitude: number, maxReviews: number = 5, includeReviewSummary: boolean = true): Promise<any> {
+    try {
+      console.log(`Getting reviews for coordinates: ${latitude}, ${longitude}`);
+      return await this.placeReviews.getReviewsByCoordinates(latitude, longitude, maxReviews, includeReviewSummary);
+    } catch (error) {
+      console.error('Error in getReviewsByCoordinates:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Error occurred while getting reviews by coordinates",
+      };
+    }
+  }
+
+  // Method to get reviews using nearby search to find Place ID
+  async getReviewsByNearbySearch(center: { value: string; isCoordinates: boolean }, keyword?: string, radius?: number, maxReviews: number = 5, includeReviewSummary: boolean = true): Promise<any> {
+    try {
+      console.log(`Getting reviews for nearby search:`, { center, keyword, radius });
+      return await this.placeReviews.getReviewsByNearbySearch(center, keyword, radius, maxReviews, includeReviewSummary);
+    } catch (error) {
+      console.error('Error in getReviewsByNearbySearch:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Error occurred while getting reviews by nearby search",
+      };
+    }
+  }
+
+  // Method to get Place Details V1 with automatic Place ID resolution
+  async getPlaceDetailsV1WithSearch(searchQuery: { address?: string; coordinates?: { lat: number; lng: number }; nearby?: { center: { value: string; isCoordinates: boolean }; keyword?: string; radius?: number } }, fields?: string[]): Promise<any> {
+    try {
+      console.log(`Getting place details V1 with search:`, searchQuery);
+      return await this.mapsTools.getPlaceDetailsV1WithSearch(searchQuery, fields);
+    } catch (error) {
+      console.error('Error in getPlaceDetailsV1WithSearch:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Error occurred while getting place details with search",
+      };
+    }
+  }
 }

@@ -193,4 +193,124 @@ export class PlaceReviews {
       };
     }
   }
-} 
+
+  // Method to get reviews using address to find Place ID
+  async getReviewsByAddress(address: string, maxReviews: number = 5, includeReviewSummary: boolean = true): Promise<CombinedReviewsResponse> {
+    try {
+      console.log(`Getting reviews for address: ${address}`);
+      
+      const placeIdResult = await this.mapsTools.getPlaceIdFromAddress(address);
+      if (!placeIdResult.success || !placeIdResult.placeId) {
+        return {
+          success: false,
+          error: placeIdResult.error || "Failed to find Place ID for the given address"
+        };
+      }
+
+      console.log(`Resolved Place ID: ${placeIdResult.placeId} for address: ${address}`);
+      
+      if (includeReviewSummary) {
+        return await this.getCombinedReviews(placeIdResult.placeId, maxReviews);
+      } else {
+        const reviewsResult = await this.getPlaceReviews(placeIdResult.placeId, maxReviews);
+        return {
+          success: reviewsResult.success,
+          error: reviewsResult.error,
+          data: reviewsResult.data ? {
+            overall_rating: reviewsResult.data.overall_rating,
+            total_ratings: reviewsResult.data.total_ratings,
+            reviews: reviewsResult.data.reviews
+          } : undefined
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Error occurred while getting reviews by address"
+      };
+    }
+  }
+
+  // Method to get reviews using coordinates to find Place ID
+  async getReviewsByCoordinates(latitude: number, longitude: number, maxReviews: number = 5, includeReviewSummary: boolean = true): Promise<CombinedReviewsResponse> {
+    try {
+      console.log(`Getting reviews for coordinates: ${latitude}, ${longitude}`);
+      
+      const placeIdResult = await this.mapsTools.getPlaceIdFromCoordinates(latitude, longitude);
+      if (!placeIdResult.success || !placeIdResult.placeId) {
+        return {
+          success: false,
+          error: placeIdResult.error || "Failed to find Place ID for the given coordinates"
+        };
+      }
+
+      console.log(`Resolved Place ID: ${placeIdResult.placeId} for coordinates: ${latitude}, ${longitude}`);
+      
+      if (includeReviewSummary) {
+        return await this.getCombinedReviews(placeIdResult.placeId, maxReviews);
+      } else {
+        const reviewsResult = await this.getPlaceReviews(placeIdResult.placeId, maxReviews);
+        return {
+          success: reviewsResult.success,
+          error: reviewsResult.error,
+          data: reviewsResult.data ? {
+            overall_rating: reviewsResult.data.overall_rating,
+            total_ratings: reviewsResult.data.total_ratings,
+            reviews: reviewsResult.data.reviews
+          } : undefined
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Error occurred while getting reviews by coordinates"
+      };
+    }
+  }
+
+  // Method to get reviews using nearby search to find Place ID
+  async getReviewsByNearbySearch(center: { value: string; isCoordinates: boolean }, keyword?: string, radius?: number, maxReviews: number = 5, includeReviewSummary: boolean = true): Promise<CombinedReviewsResponse & { availablePlaces?: Array<{ placeId: string; name: string; address?: string }> }> {
+    try {
+      console.log(`Getting reviews for nearby search:`, { center, keyword, radius });
+      
+      const placeIdResult = await this.mapsTools.getPlaceIdsNearby(center, keyword, radius);
+      if (!placeIdResult.success || !placeIdResult.placeIds || placeIdResult.placeIds.length === 0) {
+        return {
+          success: false,
+          error: placeIdResult.error || "No places found in nearby search"
+        };
+      }
+
+      // Use the first place found
+      const firstPlace = placeIdResult.placeIds[0];
+      console.log(`Using first place found: ${firstPlace.name} (${firstPlace.placeId})`);
+      
+      let reviewsResult: CombinedReviewsResponse;
+      if (includeReviewSummary) {
+        reviewsResult = await this.getCombinedReviews(firstPlace.placeId, maxReviews);
+      } else {
+        const reviews = await this.getPlaceReviews(firstPlace.placeId, maxReviews);
+        reviewsResult = {
+          success: reviews.success,
+          error: reviews.error,
+          data: reviews.data ? {
+            overall_rating: reviews.data.overall_rating,
+            total_ratings: reviews.data.total_ratings,
+            reviews: reviews.data.reviews
+          } : undefined
+        };
+      }
+
+      // Add information about available places
+      return {
+        ...reviewsResult,
+        availablePlaces: placeIdResult.placeIds
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Error occurred while getting reviews by nearby search"
+      };
+    }
+  }
+}
