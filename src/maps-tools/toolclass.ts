@@ -1,5 +1,6 @@
 import { Client, Language, TravelMode } from "@googlemaps/google-maps-services-js";
 import dotenv from "dotenv";
+import axios from "axios";
 
 // Ensure environment variables are loaded
 dotenv.config();
@@ -39,6 +40,52 @@ interface GeocodeResult {
   place_id?: string;
 }
 
+interface Review {
+  rating: number;
+  text: string;
+  time: string;
+  author_name: string;
+  aspects?: Array<{
+    rating: number;
+    type: string;
+  }>;
+  language?: string;
+  profile_photo_url?: string;
+  relative_time_description?: string;
+}
+
+interface ReviewOptions {
+  maxReviews?: number;  // Number of reviews to return (default: 5, max: 5)
+}
+
+interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
+interface PlaceDetailsResponse {
+  displayName?: {
+    text: string;
+    languageCode: string;
+  };
+  reviewSummary?: {
+    text: {
+      text: string;
+      languageCode: string;
+    };
+    flagContentUri: string;
+    disclosureText: {
+      text: string;
+      languageCode: string;
+    };
+    reviewsUri: string;
+  };
+  googleMapsLinks?: {
+    reviewsUri: string;
+  };
+}
+
 export class GoogleMapsTools {
   private client: Client;
   private defaultLanguage: Language;
@@ -69,7 +116,7 @@ export class GoogleMapsTools {
     }
   }
 
-  async getPlaceDetails(placeId: string) {
+  async getPlaceDetails(placeId: string, reviewOptions?: ReviewOptions) {
     try {
       console.log('Making API request for place details:', placeId);
       const response = await this.client.placeDetails({
@@ -109,6 +156,18 @@ export class GoogleMapsTools {
         };
       }
 
+      // Process reviews - limit number if specified
+      if (response.data.result.reviews) {
+        let reviews = [...response.data.result.reviews];
+        
+        // Limit the number of reviews if specified (max 5)
+        if (reviewOptions?.maxReviews) {
+          reviews = reviews.slice(0, Math.min(reviewOptions.maxReviews, 5));
+        }
+
+        response.data.result.reviews = reviews;
+      }
+
       console.log('Place details result:', response.data.result);
       return {
         success: true,
@@ -116,6 +175,45 @@ export class GoogleMapsTools {
       };
     } catch (error) {
       console.error("Error in getPlaceDetails:", error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Error occurred while getting place details"
+      };
+    }
+  }
+
+  async getPlaceDetailsV1(placeId: string): Promise<ApiResponse<PlaceDetailsResponse>> {
+    try {
+      console.log('Making API request for place details (v1):', placeId);
+      
+      // For API v1, we need to use the new endpoint and format
+      const url = `https://places.googleapis.com/v1/places/${placeId}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Goog-Api-Key': process.env.GOOGLE_MAPS_API_KEY || "",
+          'X-Goog-FieldMask': 'displayName,reviewSummary,googleMapsLinks.reviewsUri'
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        console.error('API Error:', errorData);
+        return {
+          success: false,
+          error: errorData?.error?.message || `HTTP error! status: ${response.status}`
+        };
+      }
+
+      const data = await response.json();
+      console.log('Place details result (v1):', data);
+      return {
+        success: true,
+        data: data as PlaceDetailsResponse
+      };
+    } catch (error) {
+      console.error("Error in getPlaceDetailsV1:", error);
       return {
         success: false,
         error: error instanceof Error ? error.message : "Error occurred while getting place details"

@@ -135,7 +135,13 @@ async function testAllMCPTools() {
     }
     log('Got place ID: ' + placeId);
 
-    const result = await tools.getPlaceDetails(placeId) as PlaceDetailsResponse;
+    // Test with different review options
+    const reviewOptions = {
+      maxReviews: 5,
+      sortBy: 'most_recent' as const
+    };
+
+    const result = await tools.getPlaceDetails(placeId, reviewOptions) as PlaceDetailsResponse;
     console.log('Place details result:', result);
     if (!result.success || !result.data) {
       throw new Error('Failed to get place details: ' + (result.error || 'Unknown error'));

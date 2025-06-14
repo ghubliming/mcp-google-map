@@ -13,30 +13,44 @@ export interface PlaceDetailsResponse {
   error?: string;
   data?: {
     name?: string;
-    address?: string;
+    formattedAddress?: string;
     location?: {
-      lat: number;
-      lng: number;
+      latitude: number;
+      longitude: number;
     };
     rating?: number;
-    user_ratings_total?: number;
-    opening_hours?: {
-      open_now?: boolean;
+    userRatingCount?: number;
+    openingHours?: {
+      openNow?: boolean;
       periods?: Array<{
         open?: { day: number; time: string };
         close?: { day: number; time: string };
       }>;
-      weekday_text?: string[];
+      weekdayText?: string[];
     };
-    phone?: string;
+    formattedPhoneNumber?: string;
     website?: string;
-    price_level?: number;
+    priceLevel?: number;
     reviews?: Array<{
       rating: number;
       text: string;
       time: number;
-      author_name: string;
+      authorName: string;
     }>;
+    reviewSummary?: {
+      text: {
+        text: string;
+        languageCode: string;
+      };
+      flagContentUri: string;
+      disclosureText: {
+        text: string;
+        languageCode: string;
+      };
+    };
+    googleMapsLinks?: {
+      reviewsUri: string;
+    };
   };
 }
 
@@ -154,21 +168,22 @@ export class PlacesSearcher {
       }
 
       const reviews = await this.placeReviews.getPlaceReviews(placeId);
+      const reviewSummary = await this.placeReviews.getReviewSummary(placeId);
       console.log('Reviews received:', reviews);
 
       return {
         success: true,
         data: {
           name: details.name,
-          address: details.formatted_address,
+          formattedAddress: details.formatted_address,
           location: details.geometry?.location ? {
-            lat: details.geometry.location.lat,
-            lng: details.geometry.location.lng
+            latitude: details.geometry.location.lat,
+            longitude: details.geometry.location.lng
           } : undefined,
           rating: details.rating,
-          total_ratings: details.user_ratings_total,
-          opening_hours: details.opening_hours ? {
-            open_now: details.opening_hours.open_now,
+          userRatingCount: details.user_ratings_total,
+          openingHours: details.opening_hours ? {
+            openNow: details.opening_hours.open_now,
             periods: details.opening_hours.periods?.map(period => ({
               open: period.open ? {
                 day: period.open.day,
@@ -179,12 +194,13 @@ export class PlacesSearcher {
                 time: period.close.time || ''
               } : undefined
             })),
-            weekday_text: details.opening_hours.weekday_text
+            weekdayText: details.opening_hours.weekday_text
           } : undefined,
-          phone: details.formatted_phone_number,
+          formattedPhoneNumber: details.formatted_phone_number,
           website: details.website,
-          price_level: details.price_level,
+          priceLevel: details.price_level,
           reviews: reviews.success ? reviews.data?.reviews : undefined,
+          reviewSummary: reviewSummary.success ? reviewSummary.data : undefined
         },
       };
     } catch (error) {

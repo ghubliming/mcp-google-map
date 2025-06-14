@@ -1,0 +1,54 @@
+[13:43:26] 
+Testing Place Details with Review Summary (API v1)...
+[13:43:26] Note: Testing with Dumpling House in New York
+[13:43:26] Using place ID: ChIJD2l2k7ZL0YkRC80d-3MV1lM
+[13:43:26] 
+Test 1: Get Review Summary (API v1)
+[13:43:26] ✅ Review Summary Test (API v1):
+[13:43:26] 
+Raw Response:
+[13:43:26] {
+  "displayName": {
+    "text": "Dumpling House",
+    "languageCode": "en"
+  },
+  "googleMapsLinks": {
+    "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x89d14bb69376690f:0x53d61573fb1dcd0b!9m1!1b1"
+  },
+  "reviewSummary": {
+    "text": {
+      "text": "Diners say this lunch restaurant serves up delicious dumplings, including pork belly buns, soup dumplings, and steamed barbecue pork dumplings, alongside tasty fried rice and noodle dishes. They also highlight the friendly and efficient service, reasonable prices, and generous portions.",
+      "languageCode": "en-US"
+    },
+    "flagContentUri": "https://www.google.com/local/review/rap/report?postId=5%401:CAIQACodChtyc19oOkE4blltMzB1eXpWblVKUjFBQXFGbWc%7CCAIQACoqChtyc19oOkE4blltMzB1eXpWblVKUjFBQXFGbWcSCwiBl_3BBhCA249g&d=17924085&t=8",
+    "disclosureText": {
+      "text": "Summarized with Gemini",
+      "languageCode": "en-US"
+    },
+    "reviewsUri": "https://www.google.com/maps/place//data=!4m4!3m3!1s0x89d14bb69376690f:0x53d61573fb1dcd0b!9m1!1b1"
+  }
+}
+[13:43:26] 
+Place Name:
+[13:43:26]   Text: Dumpling House
+[13:43:26]   Language: en
+[13:43:26] 
+Review Summary:
+[13:43:26]   Text: Diners say this lunch restaurant serves up delicious dumplings, including pork belly buns, soup dumplings, and steamed barbecue pork dumplings, alongside tasty fried rice and noodle dishes. They also highlight the friendly and efficient service, reasonable prices, and generous portions.
+[13:43:26]   Language: en-US
+[13:43:26]   Disclosure: Summarized with Gemini
+[13:43:26]   Flag Content URI: https://www.google.com/local/review/rap/report?postId=5%401:CAIQACodChtyc19oOkE4blltMzB1eXpWblVKUjFBQXFGbWc%7CCAIQACoqChtyc19oOkE4blltMzB1eXpWblVKUjFBQXFGbWcSCwiBl_3BBhCA249g&d=17924085&t=8
+[13:43:26] 
+Google Maps Links:
+[13:43:26]   Reviews URI: https://www.google.com/maps/place//data=!4m4!3m3!1s0x89d14bb69376690f:0x53d61573fb1dcd0b!9m1!1b1
+[13:43:26] 
+Test 2: Error Handling - Invalid Place ID
+[13:43:26] ✅ Error Handling Test:
+[13:43:26] Expected error received: The provided Place ID: invalid_place_id is not valid.
+
+[13:43:26] 
+Test Results Summary:
+[13:43:26] reviewSummary: ✅ PASS
+[13:43:26] errorHandling: ✅ PASS
+[13:43:26]   Error: The provided Place ID: invalid_place_id is not valid.
+
