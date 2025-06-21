@@ -3,11 +3,11 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
-import { DIRECTIONS_TOOL, DISTANCE_MATRIX_TOOL, ELEVATION_TOOL, GEOCODE_TOOL, GET_PLACE_DETAILS_TOOL, GET_REVIEWS_TOOL, REVERSE_GEOCODE_TOOL, SEARCH_NEARBY_TOOL } from "./maps-tools/mapsTools.js";
+import { DIRECTIONS_TOOL, DISTANCE_MATRIX_TOOL, ELEVATION_TOOL, GEOCODE_TOOL, GET_PLACE_DETAILS_TOOL, GET_REVIEWS_TOOL, REVERSE_GEOCODE_TOOL, REVIEW_TRUST_SCORER_TOOL, SEARCH_NEARBY_TOOL } from "./maps-tools/mapsTools.js";
 import { PlacesSearcher } from "./maps-tools/searchPlaces.js";
 import { GoogleMapsTools } from "./maps-tools/toolclass.js";
 
-const tools = [SEARCH_NEARBY_TOOL, GET_PLACE_DETAILS_TOOL, GET_REVIEWS_TOOL, GEOCODE_TOOL, REVERSE_GEOCODE_TOOL, DISTANCE_MATRIX_TOOL, DIRECTIONS_TOOL, ELEVATION_TOOL];
+const tools = [SEARCH_NEARBY_TOOL, GET_PLACE_DETAILS_TOOL, GET_REVIEWS_TOOL, REVIEW_TRUST_SCORER_TOOL, GEOCODE_TOOL, REVERSE_GEOCODE_TOOL, DISTANCE_MATRIX_TOOL, DIRECTIONS_TOOL, ELEVATION_TOOL];
 const mapsTools = new GoogleMapsTools();
 const placesSearcher = new PlacesSearcher(mapsTools);
 
@@ -108,6 +108,35 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       if (!result.success) {
         return {
           content: [{ type: "text", text: result.error || "Failed to get reviews" }],
+          isError: true,
+        };
+      }
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result.data, null, 2),
+          },
+        ],
+        isError: false,
+      };
+    }
+
+    if (name === "review_trust_scorer") {
+      const { placeId, maxReviews } = args as {
+        placeId: string;
+        maxReviews?: number;
+      };
+
+      const result = await placesSearcher.getReviewTrustScore(
+        placeId, 
+        maxReviews || 5
+      );
+
+      if (!result.success) {
+        return {
+          content: [{ type: "text", text: result.error || "Failed to calculate trust score" }],
           isError: true,
         };
       }

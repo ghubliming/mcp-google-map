@@ -1,0 +1,51 @@
+[16:24:52] 
+Testing Review Trust Scorer...
+[16:24:52] This test will analyze review trustworthiness for various places
+[16:24:52] 
+Test 1: High-traffic place (Central Park)
+[16:24:53] Got place ID: ChIJ6XWMiRn2wokROZOJYqrTD4k
+[16:24:53] ✅ High-traffic place trust score calculated successfully
+[16:24:53] Trust Score: 0
+[16:24:53] Trust Level: VERY_LOW_TRUST
+[16:24:53] Star Reliable: false
+[16:24:53] Summary Reliable: false
+[16:24:53] Message for LLM: Insufficient data, don't rely on rating
+[16:24:53] 
+Detailed Breakdown:
+[16:24:53]   Volume Score: 0
+[16:24:53]   Consistency Score: 0
+[16:24:53]   Quality Score: 0
+[16:24:53]   Red Flags: None detected
+[16:24:53] 
+Test 2: Restaurant with reviews (Times Square area)
+[16:24:53] Testing restaurant: Junior's Restaurant & Bakery
+[16:24:53] Restaurant Place ID: ChIJv8YTWFRYwokRkTUSNDg04Y4
+[16:24:53] ✅ Restaurant trust score calculated successfully
+[16:24:53] Trust Score: 85
+[16:24:53] Trust Level: HIGH_TRUST
+[16:24:53] Star Reliable: true
+[16:24:53] Summary Reliable: true
+[16:24:53] Message for LLM: Star rating and summary are reliable
+[16:24:53] 
+Detailed Breakdown:
+[16:24:53]   Volume Score: 50
+[16:24:53]   Consistency Score: 20
+[16:24:53]   Quality Score: 15
+[16:24:53]   Red Flags: None detected
+[16:24:53] 
+Test 3: Error Handling - Invalid Place ID
+[16:24:54] ✅ Error Handling Test: Expected error received
+[16:24:54] Error: Request failed with status code 400
+[16:24:54] 
+=== Review Trust Scorer Test Summary ===
+[16:24:54] highTrafficPlace: ✅ PASS
+[16:24:54]   Trust Score: 0
+[16:24:54]   Trust Level: VERY_LOW_TRUST
+[16:24:54] restaurant: ✅ PASS
+[16:24:54]   Trust Score: 85
+[16:24:54]   Trust Level: HIGH_TRUST
+[16:24:54] errorHandling: ✅ PASS
+[16:24:54]   Error: Request failed with status code 400
+[16:24:54] 
+Overall: 3/3 tests passed
+[16:24:54] Test completed

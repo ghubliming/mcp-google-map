@@ -349,3 +349,23 @@ export const GET_PLACE_DETAILS_V1_WITH_SEARCH_TOOL = {
     required: ["searchQuery"],
   },
 };
+
+export const REVIEW_TRUST_SCORER_TOOL = {
+  name: "review_trust_scorer",
+  description: "Calculate trust score for place reviews to assess reliability of ratings and summaries",
+  inputSchema: {
+    type: "object",
+    properties: {
+      placeId: {
+        type: "string",
+        description: "Place ID to analyze review trustworthiness",
+      },
+      maxReviews: {
+        type: "number",
+        description: "Maximum number of recent reviews to analyze for trust calculation (default: 5, max: 5)",
+        default: 5,
+      },
+    },
+    required: ["placeId"],
+  },
+};

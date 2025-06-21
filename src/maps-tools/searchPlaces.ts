@@ -1,5 +1,6 @@
 import { GoogleMapsTools } from "./toolclass.js";
 import { PlaceReviews } from './placeReviews.js';
+import { ReviewTrustScorer, TrustScoreResponse } from './reviewTrustScorer.js';
 
 interface SearchNearbyResponse {
   success: boolean;
@@ -91,10 +92,12 @@ interface ElevationResponse {
 export class PlacesSearcher {
   private mapsTools: GoogleMapsTools;
   private placeReviews: PlaceReviews;
+  private trustScorer: ReviewTrustScorer;
 
   constructor(mapsTools: GoogleMapsTools) {
     this.mapsTools = mapsTools;
     this.placeReviews = new PlaceReviews(mapsTools);
+    this.trustScorer = new ReviewTrustScorer();
   }
 
   async searchNearby(params: { center: { value: string; isCoordinates: boolean }; keyword?: string; radius?: number }): Promise<SearchNearbyResponse> {
@@ -346,6 +349,27 @@ export class PlacesSearcher {
       return {
         success: false,
         error: error instanceof Error ? error.message : "Error occurred while getting place details with search",
+      };
+    }
+  }
+
+  // Method to calculate review trust score
+  async getReviewTrustScore(placeId: string, maxReviews: number = 5): Promise<TrustScoreResponse> {
+    try {
+      console.log(`Calculating trust score for place ID: ${placeId}, maxReviews: ${maxReviews}`);
+      
+      // Get combined reviews data (includes recent reviews, overall stats, and AI summary)
+      const reviewData = await this.placeReviews.getCombinedReviews(placeId, maxReviews);
+      
+      // Calculate trust score using the trust scorer
+      const trustScore = this.trustScorer.calculateTrustScore(reviewData);
+      
+      return trustScore;
+    } catch (error) {
+      console.error('Error in getReviewTrustScore:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Error occurred while calculating trust score",
       };
     }
   }
