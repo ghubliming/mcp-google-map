@@ -114,3 +114,72 @@ Results:
   }
 ]
 The reviews for the Statue of Liberty are highly trustworthy. The trust score is 97, with a HIGH_TRUST level. Both the star rating and the summary are reliable.
+
+
+how about the Rainbow Oase in Zugspitzweg 19, 85375 Neufahrn bei Freising. Can you get the review and tell me if we can trust it?
+Copy
+
+Edit
+Call:
+
+[
+  {
+    "name": "maps_geocode",
+    "arguments": {
+      "address": "Rainbow Oase, Zugspitzweg 19, 85375 Neufahrn bei Freising"
+    }
+  }
+]
+Results:
+
+[
+  {
+    "type": "text",
+    "text": "{\n  \"location\": {\n    \"lat\": 48.3087753,\n    \"lng\": 11.6736214\n  },\n  \"formatted_address\": \"Zugspitzweg 19, 85375 Neufahrn bei Freising, Germany\",\n  \"place_id\": \"ChIJhQKnxyZtnkcRTWwyqHRaoX8\"\n}",
+    "annotations": null
+  }
+]
+
+Call:
+
+[
+  {
+    "name": "get_reviews",
+    "arguments": {
+      "includeReviewSummary": true,
+      "placeId": "ChIJhQKnxyZtnkcRTWwyqHRaoX8",
+      "maxReviews": 5
+    }
+  }
+]
+Results:
+
+[
+  {
+    "type": "text",
+    "text": "{\n  \"overall_rating\": 4.9,\n  \"total_ratings\": 17,\n  \"reviews\": [\n    {\n      \"rating\": 5,\n      \"text\": \"Smg 11 acog 2024\",\n      \"time\": 1719094788,\n      \"author_name\": \"Yannick Ketterer\"\n    },\n    {\n      \"rating\": 5,\n      \"text\": \"Ash Main no brain\",\n      \"time\": 1688209574,\n      \"author_name\": \"Levi K.\"\n    },\n    {\n      \"rating\": 5,\n      \"text\": \"Gay\",\n      \"time\": 1720125211,\n      \"author_name\": \"Laplace\"\n    },\n    {\n      \"rating\": 5,\n      \"text\": \"Welcome to the Oasis of Wonders, a place where sand and fun go hand in hand! 🌴 This oasis is not just a watering hole in the middle of the desert, but a true paradise for anyone who loves adventure - and appreciates a cool drink.\\n\\nAs soon as you enter, you are greeted by a group of singing camels that could have come straight out of a Disney film. The palm trees dance happily in the wind as if they were at the “Dancing with the Stars” finale. The water is so clear that you can almost see the fish smiling - or was that just a mirage?\\n\\nThere's no shortage of entertainment either: here you can relax in the shade of the palm trees while a friendly flamingo tells you the latest wildlife gossip. And if you've ever wondered what it feels like to snowboard on a dune - here's your chance!\\n\\nIn short, this oasis is the perfect place to leave the desert heat behind and immerse yourself in a refreshing adventure. A five star experience that managed to make even the sand in my shoes unforgettable! 😄\",\n      \"time\": 1740726543,\n      \"author_name\": \"SR-71 Blackbird\"\n    },\n    {\n      \"rating\": 5,\n      \"text\": \"There's no website, but you can make an appointment on-site.\\nThe service is top-notch (if you pay extra, you get an extra treatment 😉)\\nHighly recommended.\",\n      \"time\": 1736083459,\n      \"author_name\": \"Relez_ /\"\n    }\n  ]\n}",
+    "annotations": null
+  }
+]
+
+Call:
+
+[
+  {
+    "name": "review_trust_scorer",
+    "arguments": {
+      "placeId": "ChIJhQKnxyZtnkcRTWwyqHRaoX8",
+      "maxReviews": 5
+    }
+  }
+]
+Results:
+
+[
+  {
+    "type": "text",
+    "text": "{\n  \"trust_score\": 46,\n  \"trust_level\": \"LOW_TRUST\",\n  \"star_reliable\": false,\n  \"summary_reliable\": false,\n  \"message_for_llm\": \"Limited reliability, use with caution\",\n  \"breakdown\": {\n    \"volume_score\": 25,\n    \"consistency_score\": 35,\n    \"quality_score\": 6,\n    \"red_flags\": [\n      \"All recent reviews have identical rating\"\n    ]\n  }\n}",
+    "annotations": null
+  }
+]
+The reviews for Rainbow Oase have a low trust level. The star rating and the summary are not reliable.
